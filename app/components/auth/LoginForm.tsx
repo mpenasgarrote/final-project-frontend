@@ -3,12 +3,20 @@ import { Link, useFetcher } from '@remix-run/react'
 function LoginForm() {
 	const fetcher = useFetcher()
 
-	const validationErrors = fetcher.data ? fetcher.data : undefined
+	interface ValidationErrors {
+		email?: string
+		password?: string
+	}
+
+	const validationErrors: ValidationErrors = fetcher.data ? fetcher.data : {}
+
+	const errors = {
+		email: validationErrors?.email,
+		password: validationErrors?.password,
+	}
 
 	const submitBtnCaption = 'Login'
-
 	const toggleBtnCaption = 'Create a new user'
-
 	const isSubmitting = fetcher.state === 'submitting'
 
 	return (
@@ -23,7 +31,11 @@ function LoginForm() {
 						<div>
 							<label
 								htmlFor="email"
-								className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+								className={`block text-sm font-medium transition-all duration-200 ${
+									errors.email
+										? 'text-red-500 dark:text-red-500'
+										: 'text-gray-700 dark:text-gray-300'
+								}`}
 							>
 								Email
 							</label>
@@ -32,7 +44,11 @@ function LoginForm() {
 								id="email"
 								name="email"
 								placeholder="Enter your email"
-								className="w-full p-3 rounded-lg border italic focus:ring focus:ring-primaryYellow-default focus:outline-none transition-all duration-200 transform scale-100 focus:scale-105 focus:border-primaryYellow-default focus:ring-4 bg-primaryBlack-light text-gray-900 dark:text-gray-200"
+								className={`w-full p-3 rounded-lg border italic focus:outline-none transition-all duration-200 transform ${
+									errors.email
+										? 'border-red-500 focus:ring-errorColor-light text-errorColor-light focus:scale-105 focus:border-errorColor-light animate-shake'
+										: 'focus:ring focus:ring-primaryYellow-default focus:scale-105 focus:border-primaryYellow-default bg-primaryBlack-light text-gray-900 dark:text-gray-200'
+								}`}
 								required
 							/>
 						</div>
@@ -40,7 +56,11 @@ function LoginForm() {
 						<div>
 							<label
 								htmlFor="password"
-								className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+								className={`block text-sm font-medium transition-all duration-200 ${
+									errors.password
+										? 'text-red-500 dark:text-red-500'
+										: 'text-gray-700 dark:text-gray-300'
+								}`}
 							>
 								Password
 							</label>
@@ -48,9 +68,12 @@ function LoginForm() {
 								type="password"
 								id="password"
 								name="password"
-								// minLength={6}
 								placeholder="Enter your password"
-								className="w-full p-3 rounded-lg border italic focus:ring focus:ring-primaryYellow-default focus:outline-none transition-all duration-200 transform scale-100 focus:scale-105 focus:border-primaryYellow-default focus:ring-4 bg-primaryBlack-light text-gray-900 dark:text-gray-200"
+								className={`w-full p-3 rounded-lg border italic focus:outline-none transition-all duration-200 transform ${
+									errors.password
+										? 'border-red-500 focus:ring-errorColor-light text-errorColor-light focus:scale-105 focus:border-errorColor-light animate-shake'
+										: 'focus:ring focus:ring-primaryYellow-default focus:scale-105 focus:border-primaryYellow-default bg-primaryBlack-light text-gray-900 dark:text-gray-200'
+								}`}
 								required
 							/>
 						</div>
@@ -58,11 +81,13 @@ function LoginForm() {
 						<div>
 							{validationErrors && (
 								<ul>
-									{Object.values(validationErrors).map((error) => (
-										<li key={error} className="text-red-500 text-xs">
-											{error}
-										</li>
-									))}
+									{Object.entries(validationErrors).map(([key, value]) => {
+										return (
+											<li key={key} className="text-red-500 text-xs">
+												{value}
+											</li>
+										)
+									})}
 								</ul>
 							)}
 						</div>

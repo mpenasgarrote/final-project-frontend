@@ -1,22 +1,31 @@
-import { Link, useFetcher, useSearchParams } from '@remix-run/react'
+import { Link, useFetcher } from '@remix-run/react'
 
 function SignupForm() {
-	const [searchParams] = useSearchParams()
-
 	const fetcher = useFetcher()
 
-	const validationErrors = fetcher.data ? fetcher.data : undefined
+	interface ValidationErrors {
+		name?: string
+		username?: string
+		email?: string
+		password?: string
+		confirmPassword?: string
+	}
 
-	const authMode = searchParams.get('mode') || 'signup'
+	const validationErrors: ValidationErrors = fetcher.data ? fetcher.data : {}
 
-	const submitBtnCaption = authMode === 'signup' ? 'Register' : 'Login'
+	const errors = {
+		name: validationErrors?.name,
+		username: validationErrors?.username,
+		email: validationErrors?.email,
+		password: validationErrors?.password,
+		confirmPassword: validationErrors?.confirmPassword,
+	}
 
-	const toggleBtnCaption =
-		authMode === 'signup'
-			? 'Log in with an existing account'
-			: 'Create a new user'
+	const submitBtnCaption = 'Register'
 
 	const isSubmitting = fetcher.state === 'submitting'
+
+	const toggleBtnCaption = 'Already have an account? Login'
 
 	return (
 		<>
@@ -32,7 +41,11 @@ function SignupForm() {
 								<div>
 									<label
 										htmlFor="name"
-										className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+										className={`block text-sm font-medium transition-all duration-200 ${
+											errors.name
+												? 'text-red-500 dark:text-red-500'
+												: 'text-gray-700 dark:text-gray-300'
+										}`}
 									>
 										Full Name
 									</label>
@@ -41,7 +54,11 @@ function SignupForm() {
 										id="name"
 										name="name"
 										placeholder="Enter your name"
-										className="w-full p-3 rounded-lg border italic focus:ring focus:ring-primaryYellow-default focus:outline-none transition-all duration-200 transform scale-100 focus:scale-105 focus:border-primaryYellow-default focus:ring-4 bg-primaryBlack-light text-gray-900 dark:text-gray-200"
+										className={`w-full p-3 rounded-lg border italic focus:outline-none transition-all duration-200 transform ${
+											errors.name
+												? 'border-red-500 focus:ring-errorColor-light text-errorColor-light focus:scale-105 focus:border-errorColor-light animate-shake'
+												: 'focus:ring focus:ring-primaryYellow-default focus:scale-105 focus:border-primaryYellow-default bg-primaryBlack-light text-gray-900 dark:text-gray-200'
+										}`}
 										required
 									/>
 								</div>
@@ -49,7 +66,11 @@ function SignupForm() {
 								<div>
 									<label
 										htmlFor="username"
-										className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+										className={`block text-sm font-medium transition-all duration-200 ${
+											errors.username
+												? 'text-red-500 dark:text-red-500'
+												: 'text-gray-700 dark:text-gray-300'
+										}`}
 									>
 										Username
 									</label>
@@ -58,7 +79,11 @@ function SignupForm() {
 										id="username"
 										name="username"
 										placeholder="Enter your username"
-										className="w-full p-3 rounded-lg border italic focus:ring focus:ring-primaryYellow-default focus:outline-none transition-all duration-200 transform scale-100 focus:scale-105 focus:border-primaryYellow-default focus:ring-4 bg-primaryBlack-light text-gray-900 dark:text-gray-200"
+										className={`w-full p-3 rounded-lg border italic focus:outline-none transition-all duration-200 transform ${
+											errors.username
+												? 'border-red-500 focus:ring-errorColor-light text-errorColor-light focus:scale-105 focus:border-errorColor-light animate-shake'
+												: 'focus:ring focus:ring-primaryYellow-default focus:scale-105 focus:border-primaryYellow-default bg-primaryBlack-light text-gray-900 dark:text-gray-200'
+										}`}
 										required
 									/>
 								</div>
@@ -66,7 +91,11 @@ function SignupForm() {
 								<div>
 									<label
 										htmlFor="email"
-										className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+										className={`block text-sm font-medium transition-all duration-200 ${
+											errors.email
+												? 'text-red-500 dark:text-red-500'
+												: 'text-gray-700 dark:text-gray-300'
+										}`}
 									>
 										Email
 									</label>
@@ -75,7 +104,11 @@ function SignupForm() {
 										id="email"
 										name="email"
 										placeholder="Enter your email"
-										className="w-full p-3 rounded-lg border italic focus:ring focus:ring-primaryYellow-default focus:outline-none transition-all duration-200 transform scale-100 focus:scale-105 focus:border-primaryYellow-default focus:ring-4 bg-primaryBlack-light text-gray-900 dark:text-gray-200"
+										className={`w-full p-3 rounded-lg border italic focus:outline-none transition-all duration-200 transform ${
+											errors.email
+												? 'border-red-500 focus:ring-errorColor-light text-errorColor-light focus:scale-105 focus:border-errorColor-light animate-shake'
+												: 'focus:ring focus:ring-primaryYellow-default focus:scale-105 focus:border-primaryYellow-default bg-primaryBlack-light text-gray-900 dark:text-gray-200'
+										}`}
 										required
 									/>
 								</div>
@@ -83,7 +116,11 @@ function SignupForm() {
 								<div>
 									<label
 										htmlFor="password"
-										className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+										className={`block text-sm font-medium transition-all duration-200 ${
+											errors.password
+												? 'text-red-500 dark:text-red-500'
+												: 'text-gray-700 dark:text-gray-300'
+										}`}
 									>
 										Password
 									</label>
@@ -92,7 +129,11 @@ function SignupForm() {
 										id="password"
 										name="password"
 										placeholder="Enter your password"
-										className="w-full p-3 rounded-lg border italic focus:ring focus:ring-primaryYellow-default focus:outline-none transition-all duration-200 transform scale-100 focus:scale-105 focus:border-primaryYellow-default focus:ring-4 bg-primaryBlack-light text-primaryWhite-default"
+										className={`w-full p-3 rounded-lg border italic focus:outline-none transition-all duration-200 transform ${
+											errors.password
+												? 'border-red-500 focus:ring-errorColor-light text-errorColor-light focus:scale-105 focus:border-errorColor-light animate-shake'
+												: 'focus:ring focus:ring-primaryYellow-default focus:scale-105 focus:border-primaryYellow-default bg-primaryBlack-light text-gray-900 dark:text-gray-200'
+										}`}
 										required
 									/>
 								</div>
@@ -100,7 +141,11 @@ function SignupForm() {
 								<div>
 									<label
 										htmlFor="confirmPassword"
-										className="block text-sm bolder font-medium text-primaryWhite-default"
+										className={`block text-sm font-medium transition-all duration-200 ${
+											errors.confirmPassword
+												? 'text-red-500 dark:text-red-500'
+												: 'text-gray-700 dark:text-gray-300'
+										}`}
 									>
 										Confirm Password
 									</label>
@@ -109,7 +154,11 @@ function SignupForm() {
 										id="confirmPassword"
 										name="confirmPassword"
 										placeholder="Re-enter your password"
-										className="w-full p-3 rounded-lg border italic focus:ring focus:ring-primaryYellow-default focus:outline-none transition-all duration-200 transform scale-100 focus:scale-105 focus:border-primaryYellow-default focus:ring-4 bg-primaryBlack-light text-gray-900 dark:text-gray-200"
+										className={`w-full p-3 rounded-lg border italic focus:outline-none transition-all duration-200 transform ${
+											errors.confirmPassword
+												? 'border-red-500 focus:ring-errorColor-light text-errorColor-light focus:scale-105 focus:border-errorColor-light animate-shake'
+												: 'focus:ring focus:ring-primaryYellow-default focus:scale-105 focus:border-primaryYellow-default bg-primaryBlack-light text-gray-900 dark:text-gray-200'
+										}`}
 										required
 									/>
 								</div>
@@ -126,8 +175,8 @@ function SignupForm() {
 								>
 									<input
 										type="file"
-										id="profileImage"
-										name="profileImage"
+										id="image"
+										name="image"
 										accept="image/*"
 										className="w-full h-full rounded-full cursor-pointer opacity-0"
 									/>

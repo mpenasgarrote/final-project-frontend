@@ -1,6 +1,6 @@
 import { ActionFunctionArgs } from '@remix-run/node'
 import LoginForm from '../components/auth/LoginForm'
-import { validateCredentials } from '~/data/validations.server'
+import { validateLoginCredentials } from '~/data/validations.server'
 import { login } from '~/data/auth.server'
 
 export default function Index() {
@@ -26,8 +26,8 @@ export async function action({ request }: ActionFunctionArgs) {
 		}
 	}
 
-	if (validateCredentials({ email, password })) {
-		return validateCredentials({ email, password })
+	if (validateLoginCredentials({ email, password })) {
+		return validateLoginCredentials({ email, password })
 	}
 
 	try {
