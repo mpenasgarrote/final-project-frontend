@@ -19,20 +19,19 @@ export default {
 			colors: {
 				primaryBlack: {
 					default: '#202020',
-					light: '333533',
+					light: '#333533',
 				},
 				primaryYellow: {
 					default: '#FFD100',
 					light: '#FFEE32',
 				},
 				primaryWhite: {
-					default: 'D6D6D6',
+					default: '#D6D6D6',
 				},
 			},
 			backgroundImage: {
 				'login-image': "url('/images/loginBackground.jpg')",
-        "dark-gradient": "linear-gradient(to bottom right, #1A1A1A, #0D0D0D)", // Negro claro a negro oscuro
-
+				'dark-gradient': 'linear-gradient(to bottom right, #1A1A1A, #0D0D0D)', // Negro claro a negro oscuro
 			},
 		},
 	},

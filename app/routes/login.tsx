@@ -17,7 +17,13 @@ export async function action({ request }: ActionFunctionArgs) {
 	const password = formData.get('password') as string
 
 	if (!email || !password) {
-		return new Response('Email and password are required', { status: 400 })
+		return {
+			validationErrors: {
+				email: 'Email is required',
+				password: 'Password is required',
+			},
+			status: 400,
+		}
 	}
 
 	if (validateCredentials({ email, password })) {
@@ -26,13 +32,9 @@ export async function action({ request }: ActionFunctionArgs) {
 
 	try {
 		return await login({ email, password })
-	} catch (error) {
-		console.log(error)
-		console.error('Error during authentication:', error)
+	} catch (error: unknown) {
+		// console.error('Error during authentication:', error)
 
-		// if (axios.isAxiosError(error) && error.response?.status === 401) {
-		//   return new Response("Invalid login credentials", { status: 401 });
-		// }
 		return error
 	}
 }

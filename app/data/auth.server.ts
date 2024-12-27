@@ -56,3 +56,30 @@ async function createUserSession(user_id: string, redirectPath: string) {
 		},
 	})
 }
+
+export async function signup(name:string, username:string, email:string, password:string, image: File) {
+	const response = await axios.post(
+		`${apiUrl}/api/register`,
+		{ name, username, email, password },
+		{
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+			},
+			withCredentials: true,
+		}
+	)
+    
+	if (response.status === 200) {
+		const userId = response.data.user.id
+		return createUserSession(userId, "/home");
+	}
+	else {
+		const validationErr: ShowErrors = {
+			title: 'Invalid signup credentials',
+			code: '401',
+		}
+
+		throw validationErr
+	}
+  }
