@@ -33,6 +33,12 @@ export default {
 					default: '#BD1F21',
 					dark: '#9C191B',
 				},
+				scoreColor: {
+					'light-green': '#4ad66d',
+					'dark-green': '#2dc653',
+					yellow: '#f3de2c',
+					red: '#ef233c',
+				},
 			},
 			animation: {
 				shake: 'shake 0.4s ease-in-out',

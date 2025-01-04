@@ -1,10 +1,11 @@
 import { Product } from '~/types/interfaces'
+import { genreColors, getScoreColor } from '~/types/utils'
 
 export function ProductCard({ product }: { product: Product }) {
 	return (
 		<div
 			key={product.id}
-			className="bg-white dark:bg-primaryBlack-light rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-105 w-64 mx-auto flex flex-col h-full"
+			className="pointer bg-white dark:bg-primaryBlack-light rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-105 w-64 mx-auto flex flex-col h-full"
 		>
 			<img
 				src={product.image}
@@ -24,7 +25,28 @@ export function ProductCard({ product }: { product: Product }) {
 				</div>
 				<hr className="my-2" />
 				<div className="mt-auto flex justify-between items-center">
-					<div className="text-lg py-2 px-4 bg-green-500 text-white font-bold rounded-lg ml-auto">
+					<div>
+						{product.type && (
+							<div className="flex gap-4 items-center">
+								{product.genres?.map((genre) => (
+									<p
+										key={genre.id}
+										className={`${
+											genreColors[genre.name] || 'bg-primaryBlack-light'
+										} justify-self-center mt-2 rounded-md px-2 py-1 text-xs font-bold text-white`}
+									>
+										{genre.name}
+									</p>
+								))}
+							</div>
+						)}
+					</div>
+
+					<div
+						className={`text-lg py-2 px-4  ${getScoreColor(
+							product.score ?? 0
+						)} text-white font-bold rounded-lg ml-auto`}
+					>
 						<span>{product.score}</span>
 					</div>
 				</div>

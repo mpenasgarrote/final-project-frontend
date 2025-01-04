@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { Product, ShowErrors, Type } from '~/types/interfaces'
-import { getTypes } from './products.server'
+import { getGenresFromProduct, getTypes } from './products.server'
 
 const apiUrl = process.env.API_URL
 
@@ -50,14 +50,18 @@ export async function getTrendingMovies(authToken: string): Promise<Product[] | 
 
 		const allTypes: Type[] = await getTypes(authToken)
 
-		const movies: Product[] = data.map((movie) => {
+		const movies: Product[] = await Promise.all(data.map(async (movie) => {
 			const type = allTypes.find((type: Type) => type.id === movie.type_id)
 			movie.type = type
+			movie.genres = await getGenresFromProduct(movie.id, authToken)
+
 			return movie
-		})
+		}))
+
 
 		return movies as Product[]
 	} catch (error: unknown) {
+		console.log('Error fetching trending movies:', error)
 		if (axios.isAxiosError(error)) {
 			const validationErr: ShowErrors = {
 				title: error.message,

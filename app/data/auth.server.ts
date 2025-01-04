@@ -5,25 +5,6 @@ import { SignupInput, ShowErrors } from '~/types/interfaces'
 
 const apiUrl = process.env.API_URL
 
-// export async function getCsrfToken() {
-// 	try {
-// 		const token = await axios.get(apiUrl + '/sanctum/csrf-cookie', {
-// 			withCredentials: true,
-// 		})
-
-// 		if (token.data && token.data.csrf_token) {
-// 			console.log(
-// 				'CSRF token establecido correctamente: ' + token.data.csrf_token
-// 			)
-// 		} else {
-// 			console.log('CSRF token no encontrado en la respuesta')
-// 		}
-// 	} catch (error) {
-// 		console.error('Error al obtener el CSRF token', error)
-// 		throw error
-// 	}
-// }
-
 export const sessionStorage = createCookieSessionStorage({
 	cookie: {
 		name: 'authToken',
@@ -74,8 +55,6 @@ async function createUserSession(
 	session.set('user_id', user_id)
 	session.set('authToken', authToken)
 
-	console.log('Sesión creada:', session)
-
 	return redirect(redirectPath, {
 		headers: {
 			'Set-Cookie': await sessionStorage.commitSession(session),
@@ -107,7 +86,6 @@ export async function signup(
 			const userId = response.data.user.id
 			const authToken = response.data.token
 
-			console.log('AuthToken: ', authToken)
 			return createUserSession(userId, authToken, '/home')
 		} else {
 			const validationErr: ShowErrors = {
@@ -129,7 +107,20 @@ export async function getAuthToken(request: Request): Promise<string | null> {
 	const session = await sessionStorage.getSession(cookieHeader)
 
 	const authToken = session.get('authToken')
-	console.log('Valor de authToken:', authToken)
 
 	return authToken || null
+}
+
+export async function getLoggedUserId(
+	request: Request
+): Promise<string | null> {
+	const cookieHeader = request.headers.get('Cookie')
+
+	if (!cookieHeader) return null
+
+	const session = await sessionStorage.getSession(cookieHeader)
+
+	const userId = session.get('user_id')
+
+	return userId || null
 }
