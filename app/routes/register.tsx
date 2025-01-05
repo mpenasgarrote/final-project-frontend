@@ -19,7 +19,7 @@ export async function action({ request }: ActionFunctionArgs) {
 	const email = formData.get('email') as string
 	const password = formData.get('password') as string
 	const confirmPassword = formData.get('confirmPassword') as string
-	// const image = formData.get('image') as string
+	const image = formData.get('image') as File | null
 
 	if (!name || !username || !email || !password || !confirmPassword) {
 		return {
@@ -48,7 +48,7 @@ export async function action({ request }: ActionFunctionArgs) {
 	}
 
 	try {
-		return await signup(name, username, email, password, confirmPassword)
+		return await signup(name, username, email, password, confirmPassword, image)
 	} catch (error) {
 		return error
 	}

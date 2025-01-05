@@ -65,7 +65,7 @@ export default function ProductDetails() {
 						</div>
 						{product.score !== undefined && (
 							<div
-								className={`text-4xl mt-6 py-2 px-4 text-white font-bold rounded-lg w-20 h-20 flex items-center justify-center lg:mr-24 md:mr-24 lg:flex lg:items-center lg:justify-center  ${getScoreColor(
+								className={`text-4xl mt-6 py-2 px-4 text-white font-bold rounded-lg w-20 h-20 flex items-center justify-center lg:flex lg:items-center lg:justify-center  ${getScoreColor(
 									product.score
 								)} lg:mr-0`}
 							>

@@ -36,7 +36,6 @@ export async function getGenres(authToken: string): Promise<Genre[]> {
 			withCredentials: true,
 		})
 
-        console.log('genres ' + response.data.genres)
 		return response.data.genres as Genre[]
 	} catch (error: unknown) {
 		if (axios.isAxiosError(error)) {

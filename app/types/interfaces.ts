@@ -43,4 +43,13 @@ export interface Genre {
 	updated_at: string
 }
 
-
+export interface User {
+	id: number
+	name: string
+	username: string
+	email: string
+	password: string
+	image: string
+	created_at: string
+	updated_at: string
+}

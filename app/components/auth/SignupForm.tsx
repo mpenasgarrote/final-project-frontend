@@ -35,7 +35,12 @@ function SignupForm() {
 						Signup
 					</h1>
 
-					<fetcher.Form id="signup-form" method="post" className="space-y-4">
+					<fetcher.Form
+						id="signup-form"
+						method="post"
+						className="space-y-4"
+						encType="multipart/form-data"
+					>
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-10  p-4 rounded-lg">
 							<div className="space-y-4">
 								<div>

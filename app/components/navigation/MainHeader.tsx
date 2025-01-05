@@ -1,13 +1,17 @@
-import { Link } from '@remix-run/react'
+import { Link, Form } from '@remix-run/react'
+import { useState } from 'react'
+import { User } from '~/types/interfaces'
 
-const MainHeader: React.FC = () => {
+const MainHeader = ({ user }: { user: User }) => {
+	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+
 	return (
-		<nav className="bg-primaryBlack-default text-white px-6 py-4 shadow-md">
+		<nav className="bg-primaryBlack-default text-white px-6 py-4 shadow-md relative">
 			<div className="flex flex-wrap items-center justify-between max-w-7xl mx-auto">
 				<div className="flex-shrink-0 mx-auto md:mx-0">
 					<Link
 						to="/home"
-						className="text-2xl md:text-3xl font-extrabold tracking-wide text-center "
+						className="text-2xl md:text-3xl font-extrabold tracking-wide text-center"
 					>
 						<img
 							src="/images/LogoCritics.png"
@@ -17,52 +21,30 @@ const MainHeader: React.FC = () => {
 					</Link>
 				</div>
 
-				{/* Left Section: Links */}
-				<div className="flex items-center space-x-6 md:space-x-14">
-					<Link
-						to="/movies"
-						className="text-primaryWhite-default dark:text-primaryWhite-default hover:text-primaryYellow-default 
-                        hover:scale-110 hover:bg-primaryBlack-light hover:text-bolder hover:px-2 hover:py-1 hover:rounded text-lg font-medium transition-colors"
-					>
-						Movies
-					</Link>
-					<Link
-						to="/games"
-						className="text-primaryWhite-default dark:text-primaryWhite-default hover:text-primaryYellow-default 
-                        hover:scale-110 hover:bg-primaryBlack-light hover:text-bolder hover:px-2 hover:py-1 hover:rounded text-lg font-medium transition-colors"
-					>
-						Games
-					</Link>
-					<Link
-						to="/books"
-						className="text-primaryWhite-default dark:text-primaryWhite-default hover:text-primaryYellow-default 
-                        hover:scale-110 hover:bg-primaryBlack-light hover:text-bolder hover:px-2 hover:py-1 hover:rounded text-lg font-medium transition-colors"
-					>
-						Books
-					</Link>
+				{/* Botones con animación de fondo */}
+				<div className="flex items-center space-x-8">
+					{['Movies', 'Games', 'Books'].map((item) => (
+						<Link
+							key={item}
+							to={`/${item.toLowerCase()}`}
+							className="relative text-primaryWhite-default dark:text-primaryWhite-default text-lg font-medium transition-all duration-300 ease-in-out group"
+						>
+							<span className="absolute inset-0 rounded-lg bg-primaryBlack-light transform scale-y-0 origin-bottom group-hover:scale-y-100 transition-transform duration-300 ease-in-out" />
+
+							<span className="relative z-10 px-2 group-hover:text-primaryYellow-default">
+								{item}
+							</span>
+						</Link>
+					))}
 				</div>
 
 				{/* Right Section: Search and User */}
-				<div className="flex items-center space-x-6 md:space-x-8 mt-4 md:mt-0">
+				<div className="flex items-center space-x-6 md:space-x-10 mt-4 md:mt-0">
 					<div className="relative w-full max-w-xs">
 						<input
 							type="text"
 							placeholder="Search..."
 							className="bg-primaryBlack-light text-sm w-full rounded-full pl-12 pr-5 py-2.5 focus:outline-none focus:font-bold transition-transform duration-300 ease-in-out focus:scale-105 focus:ring-2 focus:ring-primaryBlack-default focus:bg-primaryWhite-default focus:text-primaryBlack-default"
-							onFocus={(e) => {
-								const nextSibling = e.target.nextSibling as HTMLElement | null
-								if (nextSibling) {
-									nextSibling.classList.add('text-primaryBlack-default')
-									nextSibling.classList.add('scale-110')
-								}
-							}}
-							onBlur={(e) => {
-								const nextSibling = e.target.nextSibling as HTMLElement | null
-								if (nextSibling) {
-									nextSibling.classList.remove('text-primaryBlack-default')
-									nextSibling.classList.remove('scale-110')
-								}
-							}}
 						/>
 						<span className="absolute inset-y-0 left-4 flex items-center text-primaryWhite-default transition-colors duration-300">
 							<i className="bi bi-search"></i>
@@ -71,14 +53,56 @@ const MainHeader: React.FC = () => {
 
 					<Link
 						to="/publish"
-						className="text-primaryBlack-default dark:text-primaryWhite-default hover:text-primaryBlack-default 
-                        hover:scale-130 hover:bg-primaryWhite-default hover:text-bolder hover:px-2 hover:py-1 hover:rounded text-lg font-medium transition-colors"
+						className=" transition-all duration-400 ease-in-out overflow-hidden transform transition-transform hover:scale-150 hover:text-primaryYellow-default"
 					>
-						Publish
+						<i className="bi bi-cloud-upload-fill mr-4 w-14 h-auto"></i>{' '}
 					</Link>
 
-					<div>
-						<span className="font-medium text-lg">Username</span>
+					{/* User Dropdown */}
+					<div className="relative">
+						{user ? (
+							<>
+								<button
+									onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+									className="focus:outline-none"
+								>
+									<img
+										src={
+											user.image
+												? user.image
+												: 'https://res.cloudinary.com/dy4kmqtwc/image/upload/v1736026088/Critics%20Eye/gtdrnbhbsebjqt3vqnha.jpg'
+										}
+										alt="User Profile"
+										className="w-auto h-14 rounded-full object-cover border-2 border-primaryBlack-light transition-all duration-300 ease-in-out transform hover:scale-125 hover:border-primaryYellow-default"
+									/>
+								</button>
+								<div
+									className={`absolute left-1/2 dark:bg-primaryBlack-default transform -translate-x-1/2 mt-2 w-48 bg-white text-black rounded-lg shadow-lg z-50 transition-all duration-300 ease-in-out ${
+										isDropdownOpen
+											? 'opacity-100 scale-100 translate-y-0 pointer-events-auto'
+											: 'opacity-0 scale-95 translate-y-2 pointer-events-none'
+									}`}
+								>
+									<ul className="py-2">
+										<li className="px-4 py-2 w-full dark:bg-primaryBlack-default dark:text-primaryWhite-default dark:hover:text-primaryYellow-default dark:hover:bg-primaryBlack-light cursor-pointer block">
+											<Link to="/profile">Profile</Link>
+										</li>
+										<li className="w-full">
+											<Form method="post" action="/logout" className="w-full">
+												<button
+													type="submit"
+													className="w-full text-left px-4 py-2 dark:bg-primaryBlack-default dark:text-primaryWhite-default dark:hover:text-primaryYellow-default dark:hover:bg-primaryBlack-light cursor-pointer block"
+												>
+													<i className="bi bi-box-arrow-right"></i>
+												</button>
+											</Form>
+										</li>
+									</ul>
+								</div>
+							</>
+						) : (
+							<span className="font-medium text-lg">Not Logged</span>
+						)}
 					</div>
 				</div>
 			</div>
