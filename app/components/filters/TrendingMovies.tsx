@@ -1,10 +1,7 @@
 import { Product } from '~/types/interfaces'
 import { ProductCard } from '../products/ProductCard'
 import { Link } from '@remix-run/react'
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
-import { useState } from 'react'
-import { useTransition, animated } from '@react-spring/web'
+import { useState, useEffect } from 'react'
 
 interface TrendingMoviesProps {
 	products: Product[]
@@ -12,9 +9,27 @@ interface TrendingMoviesProps {
 
 export function TrendingMovies({ products }: TrendingMoviesProps) {
 	const [currentPage, setCurrentPage] = useState(0)
-	const productsPerPage = 4 // Número de productos por página
+	const [currentProducts, setCurrentProducts] = useState<Product[]>([])
+	const [fadeInProduct, setFadeInProduct] = useState<Map<number, boolean>>(
+		new Map()
+	)
+	const productsPerPage = 4
 
 	const totalPages = Math.ceil(products.length / productsPerPage)
+
+	useEffect(() => {
+		const newProducts = products.slice(
+			currentPage * productsPerPage,
+			(currentPage + 1) * productsPerPage
+		)
+		setCurrentProducts(newProducts)
+
+		const fadeMap = new Map<number, boolean>()
+		newProducts.forEach((product) => {
+			fadeMap.set(product.id, true)
+		})
+		setFadeInProduct(fadeMap)
+	}, [currentPage, products])
 
 	const handleNextPage = () => {
 		if (currentPage < totalPages - 1) {
@@ -28,21 +43,8 @@ export function TrendingMovies({ products }: TrendingMoviesProps) {
 		}
 	}
 
-	const currentProducts = products.slice(
-		currentPage * productsPerPage,
-		(currentPage + 1) * productsPerPage
-	)
-
-	// Animación de transición de los productos
-	const transitions = useTransition(currentProducts, {
-		from: { opacity: 0, transform: 'translateX(100%)' },
-		enter: { opacity: 1, transform: 'translateX(0)' },
-		leave: { opacity: 0, transform: 'translateX(-100%)' },
-		config: { tension: 250, friction: 20 },
-	})
-
 	return (
-		<div className="container mx-auto max-w-screen-lg px-4">
+		<div className="container mx-auto max-w-screen-xl px-4">
 			<div className="flex justify-between items-center">
 				<h1 className="text-3xl m-4 font-bold mb-6 text-primaryBlack-default dark:text-primaryYellow-default">
 					Currently Trending Movies
@@ -52,10 +54,10 @@ export function TrendingMovies({ products }: TrendingMoviesProps) {
 					<button
 						onClick={handlePrevPage}
 						disabled={currentPage === 0}
-						className={`p-2 text-white rounded-lg ${
+						className={`p-2 rounded-lg transition-all duration-200 ease-in-out transform hover:scale-125 ${
 							currentPage === 0
-								? 'text-primaryBlack-light'
-								: 'text-primaryYellow-light'
+								? 'text-gray-400 cursor-not-allowed'
+								: 'text-primaryYellow-light hover:text-primaryYellow-dark'
 						}`}
 					>
 						<i className="bi bi-chevron-left"></i>
@@ -63,10 +65,10 @@ export function TrendingMovies({ products }: TrendingMoviesProps) {
 					<button
 						onClick={handleNextPage}
 						disabled={currentPage === totalPages - 1}
-						className={`p-2 text-white rounded-lg ${
+						className={`p-2 rounded-lg  transition-all duration-200 ease-in-out transform hover:scale-125 ${
 							currentPage === totalPages - 1
-								? 'text-primaryBlack-light'
-								: 'text-primaryYellow-light'
+								? 'text-gray-400 cursor-not-allowed'
+								: 'text-primaryYellow-light hover:text-primaryYellow-dark'
 						}`}
 					>
 						<i className="bi bi-chevron-right"></i>
@@ -74,16 +76,22 @@ export function TrendingMovies({ products }: TrendingMoviesProps) {
 				</div>
 			</div>
 
-			<hr />
+			<hr className="border-t-2 border-primaryYellow-default" />
 
-			{/* Contenedor de productos */}
-			<div className="mt-8 flex gap-6 overflow-x-auto pb-4">
-				{transitions((style, product) => (
-					<animated.div style={style} key={product.id}>
-						<Link to={`/product/details/${product.id}`} className="block">
-							<ProductCard product={product} />
-						</Link>
-					</animated.div>
+			<div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+				{currentProducts.map((product) => (
+					<Link
+						key={product.id}
+						to={`/product/details/${product.id}`}
+						className={`block transition-opacity duration-500 ${
+							fadeInProduct.get(product.id) ? 'opacity-100' : 'opacity-0'
+						}`}
+						onAnimationEnd={() => {
+							setFadeInProduct((prev) => new Map(prev).set(product.id, false))
+						}}
+					>
+						<ProductCard product={product} />
+					</Link>
 				))}
 			</div>
 		</div>

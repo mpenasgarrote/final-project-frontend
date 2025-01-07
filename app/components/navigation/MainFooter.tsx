@@ -2,7 +2,7 @@ import { Link } from '@remix-run/react'
 
 const MainFooter: React.FC = () => {
 	return (
-		<footer className="bg-primaryBlack-default text-primaryWhite-default px-6 py-4 shadow-inner">
+		<footer className="mt-10 bg-primaryBlack-default text-primaryWhite-default px-6 py-4 shadow-inner">
 			<div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between">
 				<div className="flex-shrink-0 mx-auto md:mx-0 text-center md:text-left">
 					<p className="text-sm md:text-base font-medium">
@@ -11,7 +11,6 @@ const MainFooter: React.FC = () => {
 					</p>
 				</div>
 
-				{/* Center Section: Navigation Links */}
 				<div className="flex items-center space-x-6 md:space-x-14 mt-4 md:mt-0">
 					<Link
 						to="/about"

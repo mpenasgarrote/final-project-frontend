@@ -53,3 +53,20 @@ export interface User {
 	created_at: string
 	updated_at: string
 }
+
+export interface Review {
+	id: number
+	user_id: number
+	user?: User
+	title: string
+	content: string
+	score: number
+	product_id: number
+	product?: Product
+	created_at: Date
+	updated_at: Date
+}
+
+export interface ReviewError {
+	message?: string
+}

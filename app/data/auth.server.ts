@@ -1,7 +1,6 @@
 import { createCookieSessionStorage } from '@remix-run/node'
 import { redirect } from '@remix-run/react'
 import axios from 'axios'
-// import { parse } from 'cookie' // Necesitas instalar la librería 'cookie' para parsear las cookies
 import { SignupInput, ShowErrors, User } from '~/types/interfaces'
 
 const apiUrl = process.env.API_URL

@@ -5,7 +5,7 @@ export function ProductCard({ product }: { product: Product }) {
 	return (
 		<div
 			key={product.id}
-			className="pointer bg-white dark:bg-primaryBlack-light rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-105 w-64 mx-auto flex flex-col h-full"
+			className="pointer bg-white dark:bg-primaryBlack-light rounded-lg shadow-lg overflow-hidden transform transition-transform transition-opacity opacity-100 hover:scale-105 w-64 mx-auto flex flex-col h-full"
 		>
 			<img
 				src={product.image}

@@ -21,7 +21,6 @@ const MainHeader = ({ user }: { user: User }) => {
 					</Link>
 				</div>
 
-				{/* Botones con animación de fondo */}
 				<div className="flex items-center space-x-8">
 					{['Movies', 'Games', 'Books'].map((item) => (
 						<Link
@@ -38,7 +37,6 @@ const MainHeader = ({ user }: { user: User }) => {
 					))}
 				</div>
 
-				{/* Right Section: Search and User */}
 				<div className="flex items-center space-x-6 md:space-x-10 mt-4 md:mt-0">
 					<div className="relative w-full max-w-xs">
 						<input
@@ -58,7 +56,6 @@ const MainHeader = ({ user }: { user: User }) => {
 						<i className="bi bi-cloud-upload-fill mr-4 w-14 h-auto"></i>{' '}
 					</Link>
 
-					{/* User Dropdown */}
 					<div className="relative">
 						{user ? (
 							<>
