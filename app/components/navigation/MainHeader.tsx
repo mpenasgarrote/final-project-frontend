@@ -61,7 +61,7 @@ const MainHeader = ({ user }: { user: User }) => {
 							<>
 								<button
 									onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-									className="focus:outline-none"
+									className="w-auto h-auto"
 								>
 									<img
 										src={
@@ -70,7 +70,7 @@ const MainHeader = ({ user }: { user: User }) => {
 												: 'https://res.cloudinary.com/dy4kmqtwc/image/upload/v1736026088/Critics%20Eye/gtdrnbhbsebjqt3vqnha.jpg'
 										}
 										alt="User Profile"
-										className="w-auto h-14 rounded-full object-cover border-2 border-primaryBlack-light transition-all duration-300 ease-in-out transform hover:scale-125 hover:border-primaryYellow-default"
+										className="w-20 h-14 rounded-full object-cover border border-primaryBlack-light transition-all duration-300 ease-in-out transform hover:scale-125 hover:border-primaryYellow-default"
 									/>
 								</button>
 								<div

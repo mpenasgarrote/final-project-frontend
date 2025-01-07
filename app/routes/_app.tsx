@@ -3,11 +3,17 @@ import { Outlet, useLoaderData } from '@remix-run/react'
 import Loader from '~/components/navigation/Loader'
 import MainFooter from '~/components/navigation/MainFooter'
 import MainHeader from '~/components/navigation/MainHeader'
-import { getLoggedUser } from '~/data/auth.server'
+import { getAuthToken, getLoggedUser } from '~/data/auth.server'
 import { User } from '~/types/interfaces'
 
 export async function loader({ request }: LoaderFunctionArgs) {
-	const user = getLoggedUser(request)
+	const authToken = await getAuthToken(request)
+
+	if (!authToken) {
+		return redirect('/login')
+	}
+
+	const user = getLoggedUser(request, authToken)
 
 	if (!user) {
 		return redirect('/login')

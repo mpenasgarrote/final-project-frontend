@@ -60,6 +60,23 @@ export async function postReview(
 	}
 }
 
+export async function deleteReviewById(review_id: number, authToken: string) {
+	const response = await axios.delete(`${apiUrl}/api/reviews/${review_id}`, {
+		headers: {
+			Authorization: `Bearer ${authToken}`,
+			'Content-Type': 'application/json',
+			Accept: 'application/json',
+		},
+		withCredentials: true,
+	})
+
+	if (response.status === 200) {
+		console.log('Review Deleted Succesfully.', response.data)
+	} else {
+		console.error('An error has occured when deleting a review.')
+	}
+}
+
 export async function getReviewsFromProduct(
 	product_id: string,
 	authToken: string

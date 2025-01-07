@@ -2,11 +2,10 @@ import { useFetcher } from '@remix-run/react'
 
 interface AddReviewProps {
 	productId: number
+	fetcher: ReturnType<typeof useFetcher>
 }
 
-function AddReview({ productId }: AddReviewProps) {
-	const fetcher = useFetcher()
-
+function AddReview({ productId, fetcher }: AddReviewProps) {
 	type FetcherData = {
 		ReviewError?: {
 			message?: string
@@ -20,7 +19,7 @@ function AddReview({ productId }: AddReviewProps) {
 	return (
 		<fetcher.Form
 			method="post"
-			action="/addReview"
+			action={`/addReview/${productId}`}
 			className="bg-primaryWhite-default dark:bg-primaryBlack-light p-8 rounded-xl shadow-lg mb-6 transition-all duration-300"
 		>
 			{reviewErrors?.message && (

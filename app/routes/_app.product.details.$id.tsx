@@ -12,9 +12,10 @@ export async function loader({ params, request }: LoaderFunctionArgs): Promise<{
 	reviews: Review[]
 	userLogged: number | null
 } | null> {
-	const authToken = await getAuthToken(request)
+	const authToken = (await getAuthToken(request)) as string
 
-	const userLogged = (await getLoggedUser(request)).id
+	const loggedUser = await getLoggedUser(request, authToken)
+	const userLogged = loggedUser ? loggedUser.id : null
 
 	const productId = params.id as string
 

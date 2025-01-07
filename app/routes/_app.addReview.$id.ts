@@ -1,11 +1,12 @@
-import { ActionFunctionArgs, redirect } from '@remix-run/node'
+import { ActionFunctionArgs } from '@remix-run/node'
 import { getAuthToken, getLoggedUserId } from '~/data/auth.server'
 import {
 	checkIfUserHasReviewOnProduct,
+	getReviewsFromProduct,
 	postReview,
 } from '~/data/reviews.server'
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request, params }: ActionFunctionArgs) {
 	const authToken = await getAuthToken(request)
 	const formData = await request.formData()
 
@@ -13,7 +14,7 @@ export async function action({ request }: ActionFunctionArgs) {
 	const title = formData.get('title')
 	const content = formData.get('content')
 	const score = formData.get('score') as string | null
-	const productId = formData.get('productId') as string | null
+	const productId = params.id
 
 	if (
 		typeof title !== 'string' ||
@@ -41,7 +42,10 @@ export async function action({ request }: ActionFunctionArgs) {
 
 		try {
 			await postReview(productId, userId, title, content, score, authToken)
-			return redirect(`/product/details/${productId}`)
+
+			const updatedReviews = await getReviewsFromProduct(productId, authToken)
+
+			return { reviews: updatedReviews }
 		} catch (error) {
 			return {
 				ReviewError: {

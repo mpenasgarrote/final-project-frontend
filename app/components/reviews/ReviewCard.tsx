@@ -1,13 +1,19 @@
 import { Review } from '~/types/interfaces'
 import { getScoreColor } from '~/types/utils'
 import DeleteReview from './DeleteReview'
+import { useFetcher } from '@remix-run/react'
 
 interface ReviewCardProps {
 	review: Review
 	userLogged: number
+	fetcher: ReturnType<typeof useFetcher>
 }
 
-export default function ReviewCard({ review, userLogged }: ReviewCardProps) {
+export default function ReviewCard({
+	review,
+	userLogged,
+	fetcher,
+}: ReviewCardProps) {
 	const isUserReviewOwner = review.user_id === userLogged
 
 	return (
@@ -58,7 +64,11 @@ export default function ReviewCard({ review, userLogged }: ReviewCardProps) {
 
 			{isUserReviewOwner && (
 				<div className="flex justify-end mt-4">
-					<DeleteReview />
+					<DeleteReview
+						reviewId={review.id}
+						productId={review.product_id}
+						fetcher={fetcher}
+					/>
 				</div>
 			)}
 		</div>

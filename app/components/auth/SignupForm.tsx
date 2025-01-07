@@ -1,4 +1,5 @@
 import { Link, useFetcher } from '@remix-run/react'
+import { useState } from 'react'
 
 function SignupForm() {
 	const fetcher = useFetcher()
@@ -24,6 +25,28 @@ function SignupForm() {
 	const submitBtnCaption = 'Register'
 
 	const isSubmitting = fetcher.state === 'submitting'
+
+	const [imagePreview, setImagePreview] = useState(
+		'https://res.cloudinary.com/dy4kmqtwc/image/upload/v1736026088/Critics%20Eye/gtdrnbhbsebjqt3vqnha.jpg'
+	)
+
+	const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const file = event.target.files?.[0]
+		if (file) {
+			setIsLoading(true)
+
+			const reader = new FileReader()
+			reader.onload = () => {
+				if (reader.readyState === FileReader.DONE) {
+					setImagePreview(reader.result as string)
+					setIsLoading(false)
+				}
+			}
+			reader.readAsDataURL(file)
+		}
+	}
+
+	const [isLoading, setIsLoading] = useState(false)
 
 	const toggleBtnCaption = 'Already have an account? Login'
 
@@ -169,21 +192,28 @@ function SignupForm() {
 								</div>
 							</div>
 
-							<div className="flex justify-center items-center  rounded-lg p-4">
+							<div className="flex justify-center items-center rounded-lg p-4">
 								<div
-									className="w-60 h-60 border-4 bg-primaryBlack-light border-dashed border-primaryWhite-default rounded-full p-2 flex justify-center items-center"
+									className="w-60 h-60 border-4 bg-primaryBlack-light border border-primaryWhite-default rounded-full p-2 flex justify-center items-center transition-all duration-300 ease-in-out transform hover:scale-125 hover:border-primaryYellow-default relative"
 									style={{
-										backgroundImage: 'url("/images/defaultUser.jpeg"")',
+										backgroundImage: `url(${imagePreview})`,
 										backgroundSize: 'cover',
 										backgroundPosition: 'center',
 									}}
 								>
+									{isLoading && (
+										<div className="w-full h-full rounded-full absolute inset-0 flex justify-center items-center bg-black bg-opacity-50">
+											<div className="w-10 h-10 border-4 border-t-transparent border-primaryYellow-light border-solid rounded-full animate-spin"></div>
+										</div>
+									)}
+
 									<input
 										type="file"
 										id="image"
 										name="image"
 										accept="image/*"
 										className="w-full h-full rounded-full cursor-pointer opacity-0"
+										onChange={handleImageChange}
 									/>
 								</div>
 							</div>
@@ -201,7 +231,6 @@ function SignupForm() {
 							)}
 						</div>
 
-						{/* Submit Button */}
 						<button
 							disabled={isSubmitting}
 							type="submit"

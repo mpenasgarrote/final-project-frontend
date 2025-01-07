@@ -1,4 +1,4 @@
-import { LoaderFunction } from '@remix-run/node'
+import { LoaderFunction, redirect } from '@remix-run/node'
 import { getAuthToken } from '~/data/auth.server'
 import { TrendingMovies } from '../components/filters/TrendingMovies'
 import { useLoaderData } from '@remix-run/react'
@@ -9,7 +9,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 	const authToken = await getAuthToken(request)
 
 	if (!authToken) {
-		throw new Response('Unauthorized', { status: 401 })
+		return redirect('/login')
 	}
 
 	const trendingMovies = await getTrendingMovies(authToken)

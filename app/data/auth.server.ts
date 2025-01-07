@@ -156,57 +156,28 @@ export async function getLoggedUserId(
 
 export async function logout(request: Request) {
 	try {
-		// const authToken = await getAuthToken(request)
-		// // const csrfToken = await getCsrfToken(request)
+		const session = await sessionStorage.getSession(
+			request.headers.get('Cookie')
+		)
 
-		// // console.log('CSRF:' + csrfToken)
+		session.set('user_id', null)
+		session.set('authToken', null)
 
-		// if (!authToken) {
-		// 	throw new Error('No authentication token found.')
-		// }
+		const cookie = await sessionStorage.commitSession(session)
 
-		// await axios.post(
-		// 	`${apiUrl}/logout`,
-		// 	{},
-		// 	{
-		// 		headers: {
-		// 			'Content-Type': 'application/json',
-		// 			Accept: 'application/json',
-		// 			Authorization: `Bearer ${authToken}`,
-		// 		},
-		// 	}
-		// )
-
-		// const title = 'La Sociedad de la Nieve'
-		// const description = 'Blablablablablablbal'
-		// const type_id = 2
-		// const author = 'Marc Penas Garrote'
-		// const user_id = 2
-
-		// const response = await axios.post(
-		// 	`${apiUrl}/api/products`,
-		// 	{ title, description, type_id, author, user_id },
-		// 	{
-		// 		headers: {
-		// 			'Content-Type': 'application/json',
-		// 			Accept: 'application/json',
-		// 			Authorization: `Bearer ${authToken}`,
-		// 		},
-		// 		withCredentials: true,
-		// 	}
-		// )
-
-		// console.log(response.data)
-
-		return redirect('/login')
+		return redirect('/login', {
+			headers: {
+				'Set-Cookie': cookie,
+			},
+		})
 	} catch (error) {
 		console.error('error during logout: ' + error)
 		return redirect('/home')
 	}
 }
 
-export async function getLoggedUser(request: Request) {
-	const authToken = await getAuthToken(request)
+export async function getLoggedUser(request: Request, authToken: string) {
+	if (!authToken) return null
 
 	const response = await axios.get(apiUrl + '/api/user', {
 		headers: {
@@ -216,33 +187,3 @@ export async function getLoggedUser(request: Request) {
 
 	return response.data as User
 }
-
-// export async function getCsrfToken(): Promise<string | null> {
-// 	try {
-// 		// Realiza la solicitud para obtener la cookie CSRF
-// 		const response = await axios.get(`${apiUrl}/sanctum/csrf-cookie`, {
-// 			withCredentials: true,
-// 		})
-
-// 		// Axios debería gestionar automáticamente las cookies
-// 		const csrfToken = getCookie('XSRF-TOKEN') // getCookie es una función para extraer cookies
-
-// 		if (csrfToken) {
-// 			console.log('CSRF Token from cookie: ', csrfToken)
-// 			return csrfToken
-// 		} else {
-// 			console.error('CSRF Token not found in cookies')
-// 			return null
-// 		}
-// 	} catch (error) {
-// 		console.error('Error fetching CSRF token:', error)
-// 		return null
-// 	}
-// }
-
-// function getCookie(name: string): string | null {
-// 	const value = `; ${document.cookie}`
-// 	const parts = value.split(`; ${name}=`)
-// 	if (parts.length === 2) return parts.pop()?.split(';').shift() || null
-// 	return null
-// }
