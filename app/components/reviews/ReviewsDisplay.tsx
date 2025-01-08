@@ -19,6 +19,10 @@ export function ReviewsDisplay({ reviews, userLogged }: ReviewsDisplayProps) {
 		if (fetcher.state === 'idle' && fetcher.data?.reviews) {
 			setReviews(fetcher.data.reviews)
 		}
+
+		if (fetcher.state === 'loading') {
+			setShowForm(false)
+		}
 	}, [fetcher.state, fetcher.data])
 
 	return (

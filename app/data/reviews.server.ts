@@ -77,6 +77,45 @@ export async function deleteReviewById(review_id: number, authToken: string) {
 	}
 }
 
+export async function updateReviewById(review: { id: number, title: string, content: string, score: number }, authToken: string) {
+	try {
+		const { id: review_id, ...reviewData } = review 
+		const response = await axios.patch(
+			`${apiUrl}/api/reviews/${review_id}`,
+			reviewData,
+			{
+				headers: {
+					Authorization: `Bearer ${authToken}`,
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+				},
+				withCredentials: true,
+			}
+		)
+
+		if (response.status !== 200) {
+			throw new Error(
+				`Failed to update review ${review_id}. Status: ${response.status}`
+			)
+		}
+
+		console.log('Review updated successfully:', response.data)
+
+		return response.data
+	} catch (error) {
+		if (axios.isAxiosError(error)) {
+			console.error(
+				'Axios error while updating review:',
+				error.response?.data || error.message
+			)
+		} else {
+			console.error('Unexpected error while updating review:', error)
+		}
+
+		throw error
+	}
+}
+
 export async function getReviewsFromProduct(
 	product_id: string,
 	authToken: string

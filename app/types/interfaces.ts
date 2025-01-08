@@ -63,8 +63,8 @@ export interface Review {
 	score: number
 	product_id: number
 	product?: Product
-	created_at: Date
-	updated_at: Date
+	created_at?: Date
+	updated_at?: Date
 }
 
 export interface ReviewError {
