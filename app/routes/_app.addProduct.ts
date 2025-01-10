@@ -4,8 +4,6 @@ import { getAuthToken, getLoggedUserId } from '~/data/auth.server'
 import { postProduct } from '~/data/products.server'
 
 export async function action({ request }: ActionFunctionArgs) {
-	console.log('Si')
-
 	const authToken = await getAuthToken(request)
 	const formData = await request.formData()
 
@@ -28,7 +26,7 @@ export async function action({ request }: ActionFunctionArgs) {
 					type_id: Number(typeId),
 					genres: genres,
 					user_id: Number(userId),
-                    image: image
+					image: image,
 				},
 				authToken
 			)

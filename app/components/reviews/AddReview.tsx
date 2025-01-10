@@ -12,7 +12,6 @@ function AddReview({ productId, fetcher }: AddReviewProps) {
 		}
 	}
 
-	console.log('product: ', productId)
 	const reviewErrors = (fetcher.data as FetcherData)?.ReviewError
 
 	const isSubmitting = fetcher.state === 'submitting'

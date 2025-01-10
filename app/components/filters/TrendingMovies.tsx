@@ -1,18 +1,16 @@
-import { Product } from '~/types/interfaces'
+import { Product, User } from '~/types/interfaces'
 import { ProductCard } from '../products/ProductCard'
-import { Link } from '@remix-run/react'
 import { useState, useEffect } from 'react'
 
 interface TrendingMoviesProps {
 	products: Product[]
+	userLogged: User
 }
 
-export function TrendingMovies({ products }: TrendingMoviesProps) {
+export function TrendingMovies({ products, userLogged }: TrendingMoviesProps) {
 	const [currentPage, setCurrentPage] = useState(0)
 	const [currentProducts, setCurrentProducts] = useState<Product[]>([])
-	const [fadeInProduct, setFadeInProduct] = useState<Map<number, boolean>>(
-		new Map()
-	)
+
 	const productsPerPage = 4
 
 	const totalPages = Math.ceil(products.length / productsPerPage)
@@ -28,7 +26,6 @@ export function TrendingMovies({ products }: TrendingMoviesProps) {
 		newProducts.forEach((product) => {
 			fadeMap.set(product.id, true)
 		})
-		setFadeInProduct(fadeMap)
 	}, [currentPage, products])
 
 	const handleNextPage = () => {
@@ -80,18 +77,11 @@ export function TrendingMovies({ products }: TrendingMoviesProps) {
 
 			<div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 				{currentProducts.map((product) => (
-					<Link
+					<ProductCard
 						key={product.id}
-						to={`/product/details/${product.id}`}
-						className={`block transition-opacity duration-500 ${
-							fadeInProduct.get(product.id) ? 'opacity-100' : 'opacity-0'
-						}`}
-						onAnimationEnd={() => {
-							setFadeInProduct((prev) => new Map(prev).set(product.id, false))
-						}}
-					>
-						<ProductCard product={product} />
-					</Link>
+						product={product}
+						userLogged={userLogged}
+					/>
 				))}
 			</div>
 		</div>

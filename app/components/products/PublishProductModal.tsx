@@ -69,6 +69,12 @@ const PublishProductModal: React.FC<PublishProductProps> = ({ onClose }) => {
 	const isSubmitting =
 		fetcher.state === 'submitting' || fetcher.state === 'loading'
 
+	useEffect(() => {
+		if (fetcher.state === 'idle' && fetcher.data) {
+			onClose()
+		}
+	}, [fetcher.state, fetcher.data, onClose])
+
 	return (
 		<div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center animate__animated animate__fadeIn">
 			<ComponentLoader fetcher={fetcher} />
@@ -216,9 +222,7 @@ const PublishProductModal: React.FC<PublishProductProps> = ({ onClose }) => {
 											onClick={() => toggleGenreSelection(genre.id)}
 											className={`justify-self-center mt-2 rounded-md px-4 py-2 text-xs font-bold hover:scale-110 text-white transition-all duration-200 ${
 												selectedGenres.includes(genre.id)
-													? `${
-															genreColors[genre.name]
-													  } border-2 border-primaryYellow-light scale-105 text-black`
+													? `${ genreColors[genre.name] } border-2 border-primaryYellow-light scale-105 text-black`
 													: 'bg-primaryBlack-light border-2 border-primaryBlack-default text-white'
 											}`}
 										>

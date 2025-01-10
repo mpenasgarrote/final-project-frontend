@@ -129,7 +129,7 @@ export async function postProduct(
 		type_id: number
 		genres: number[]
 		user_id: number
-		image: File |null
+		image: File | null
 	},
 	authToken: string
 ) {
@@ -192,6 +192,153 @@ export async function postProduct(
 	}
 }
 
+export async function deleteProductById(product_id: number, authToken: string) {
+	const response = await axios.delete(`${apiUrl}/api/products/${product_id}`, {
+		headers: {
+			Authorization: `Bearer ${authToken}`,
+			'Content-Type': 'application/json',
+			Accept: 'application/json',
+		},
+		withCredentials: true,
+	})
+
+	console.log('Response: ', response.data)
+
+	if (response.status === 200) {
+		console.log('Product Deleted Succesfully.', response.data)
+	} else {
+		console.error('An error has occured when deleting a product.')
+	}
+}
+
+export async function updateProductById(
+	product: {
+		id: number
+		title: string
+		description: string
+		author: string
+		type_id: number
+		genres: number[]
+		image: File | null
+	},
+	authToken: string
+) {
+	try {
+		const { id, title, description, author, type_id, genres, image } = product
+
+		const response = await axios.patch(
+			`${apiUrl}/api/products/${id}`,
+			{ title, description, author, type_id },
+			{
+				headers: {
+					Authorization: `Bearer ${authToken}`,
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+				},
+				withCredentials: true,
+			}
+		)
+
+		if (response.status !== 200) {
+			throw new Error(
+				`Failed to update product ${id}. Status: ${response.status}`
+			)
+		}
+
+		if (genres.length > 0) {
+			genres.map(async (genre) => {
+				const product_id = product.id
+				const genre_id = genre
+
+				await axios.post(
+					`${apiUrl}/api/product-genres`,
+					{ product_id, genre_id },
+					{
+						headers: {
+							Authorization: `Bearer ${authToken}`,
+							'Content-Type': 'application/json',
+							Accept: 'application/json',
+						},
+						withCredentials: true,
+					}
+				)
+			})
+		}
+
+		console.log('Product updated successfully:', response.data)
+
+		if (genres.length > 0) {
+			updateProductGenres(id, genres, authToken)
+		}
+
+		if (image) {
+			checkImage(id, image, authToken)
+		}
+
+		return response.data
+	} catch (error) {
+		if (axios.isAxiosError(error)) {
+			console.error(
+				'Axios error while updating review:',
+				error.response?.data || error.message
+			)
+		} else {
+			console.error('Unexpected error while updating review:', error)
+		}
+
+		throw error
+	}
+}
+
+async function checkImage(product_id: number, image: File | string, authToken:string) {
+	const product = await getProductById(String(product_id), authToken)
+
+	if (product?.image === image) {
+		return null
+	}
+
+	if (image instanceof File) {
+		uploadProductImage(product_id, image, authToken)
+	} else {
+		console.error('Invalid image type. Expected a File.')
+	}
+}
+
+const updateProductGenres = async (
+	product_id: number,
+	genres: number[],
+	authToken: string
+) => {
+	try {
+		await axios.delete(`${apiUrl}/api/product-genres?product_id=${product_id}`, {
+			headers: {
+				Authorization: `Bearer ${authToken}`,
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+			},
+			withCredentials: true,
+		})
+		console.log('Existing genres removed.')
+
+		const response = await axios.post(
+			`${apiUrl}/api/product-genres`,
+			{ product_id, genres },
+			{
+				headers: {
+					Authorization: `Bearer ${authToken}`,
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+				},
+				withCredentials: true,
+			}
+		)
+
+		console.log('Genres updated:', response.data)
+	} catch (error) {
+		console.error('Error updating genres:', error)
+	}
+}
+
 async function uploadProductImage(
 	productId: number,
 	image: File,
@@ -208,7 +355,7 @@ async function uploadProductImage(
 			{
 				headers: {
 					'Content-Type': 'multipart/form-data',
-					Authorization: `Bearer ${authToken}`
+					Authorization: `Bearer ${authToken}`,
 				},
 				withCredentials: true,
 			}
