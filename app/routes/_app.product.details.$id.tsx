@@ -119,7 +119,7 @@ export default function ProductDetails() {
 				</div>
 			</div>
 
-			<ReviewsDisplay reviews={reviews} userLogged={userLogged} />
+			<ReviewsDisplay productId={product.id} reviews={reviews} userLogged={userLogged} />
 		</>
 	)
 }

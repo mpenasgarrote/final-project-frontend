@@ -44,6 +44,8 @@ export default {
 				shake: 'shake 0.4s ease-in-out',
 				fadeIn: 'fadeIn 1s ease-out forwards',
 				'slide-down': 'slide-down 0.3s ease-out',
+				fadeInScale: 'fadeInScale 0.3s ease-out forwards',
+
 			},
 			keyframes: {
 				shake: {
@@ -62,6 +64,9 @@ export default {
 					'0%': { opacity: '0', transform: 'translateY(-10px)' },
 					'100%': { opacity: '1', transform: 'translateY(0)' },
 				},
+				fadeInScale: {
+					'0%': { opacity: '0', transform: 'scale(0.95)' },
+					'100%': { opacity: '1', transform: 'scale(1)' } }
 			},
 			backgroundImage: {
 				'login-image': "url('/images/loginBackground.jpg')",

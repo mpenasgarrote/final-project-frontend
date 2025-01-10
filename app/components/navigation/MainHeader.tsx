@@ -1,9 +1,16 @@
 import { Link, Form } from '@remix-run/react'
 import { useState } from 'react'
 import { User } from '~/types/interfaces'
+import PublishProductModal from '../products/PublishProductModal'
 
 const MainHeader = ({ user }: { user: User }) => {
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+
+	const [isProductModalOpen, setIsProductModalOpen] = useState(false)
+
+	const openModal = () => setIsProductModalOpen(true)
+
+	const closeModal = () => setIsProductModalOpen(false)
 
 	return (
 		<nav className="bg-primaryBlack-default text-white px-6 py-4 shadow-md relative">
@@ -49,12 +56,12 @@ const MainHeader = ({ user }: { user: User }) => {
 						</span>
 					</div>
 
-					<Link
-						to="/publish"
+					<button
+						onClick={openModal}
 						className=" transition-all duration-400 ease-in-out overflow-hidden transform transition-transform hover:scale-150 hover:text-primaryYellow-default"
 					>
 						<i className="bi bi-cloud-upload-fill mr-4 w-14 h-auto"></i>{' '}
-					</Link>
+					</button>
 
 					<div className="relative">
 						{user ? (
@@ -103,6 +110,8 @@ const MainHeader = ({ user }: { user: User }) => {
 					</div>
 				</div>
 			</div>
+
+			{isProductModalOpen && <PublishProductModal onClose={closeModal} />}
 		</nav>
 	)
 }

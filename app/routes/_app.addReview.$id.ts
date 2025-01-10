@@ -15,7 +15,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
 	const content = formData.get('content')
 	const score = formData.get('score') as string | null
 	const productId = params.id
-
 	if (
 		typeof title !== 'string' ||
 		typeof content !== 'string' ||
@@ -41,7 +40,14 @@ export async function action({ request, params }: ActionFunctionArgs) {
 		}
 
 		try {
-			await postReview(productId, userId, title, content, score, authToken)
+			await postReview(
+				Number(productId),
+				userId,
+				title,
+				content,
+				score,
+				authToken
+			)
 
 			const updatedReviews = await getReviewsFromProduct(productId, authToken)
 

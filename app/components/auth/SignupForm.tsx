@@ -24,7 +24,7 @@ function SignupForm() {
 
 	const submitBtnCaption = 'Register'
 
-	const isSubmitting = fetcher.state === 'submitting'
+	const isSubmitting = fetcher.state === 'submitting' || fetcher.state === 'loading'
 
 	const [imagePreview, setImagePreview] = useState(
 		'https://res.cloudinary.com/dy4kmqtwc/image/upload/v1736026088/Critics%20Eye/gtdrnbhbsebjqt3vqnha.jpg'

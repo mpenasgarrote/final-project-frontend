@@ -3,14 +3,19 @@ import { Review } from '~/types/interfaces'
 import ReviewCard from './ReviewCard'
 import AddReview from './AddReview'
 import { useFetcher } from '@remix-run/react'
-import ReviewLoader from './ReviewLoader'
+import ComponentLoader from '../navigation/ComponentLoader'
 
 interface ReviewsDisplayProps {
+	productId: number
 	reviews: Review[]
 	userLogged: number
 }
 
-export function ReviewsDisplay({ reviews, userLogged }: ReviewsDisplayProps) {
+export function ReviewsDisplay({
+	productId,
+	reviews,
+	userLogged,
+}: ReviewsDisplayProps) {
 	const fetcher = useFetcher<{ reviews: Review[] }>()
 	const [updatedReviews, setReviews] = useState(reviews)
 	const [showForm, setShowForm] = useState(false)
@@ -27,7 +32,7 @@ export function ReviewsDisplay({ reviews, userLogged }: ReviewsDisplayProps) {
 
 	return (
 		<div className="relative max-w-4xl mt-10 mx-auto p-10 px-20 rounded-lg dark:bg-primaryBlack-default drop-shadow-lg">
-			<ReviewLoader fetcher={fetcher} />
+			<ComponentLoader fetcher={fetcher} />
 
 			<div className="flex justify-between items-center mb-6">
 				<h1 className="text-3xl font-semibold text-primaryBlack-default dark:text-primaryYellow-default">
@@ -44,10 +49,7 @@ export function ReviewsDisplay({ reviews, userLogged }: ReviewsDisplayProps) {
 
 			{showForm && (
 				<div className="animate-slide-down">
-					<AddReview
-						fetcher={fetcher}
-						productId={updatedReviews[0]?.product_id}
-					/>
+					<AddReview fetcher={fetcher} productId={productId} />
 				</div>
 			)}
 

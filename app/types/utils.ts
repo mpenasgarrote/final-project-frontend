@@ -4,9 +4,16 @@ export const genreColors: { [key: string]: string } = {
 	Comedy: 'bg-yellow-500',
 	Drama: 'bg-purple-800',
 	Horror: 'bg-purple-500',
-	Thriller: 'bg-gray-500',
-	Fantasy: 'bg-indigo-500',
+	Thriller: 'bg-gray-800',
+	Fantasy: 'bg-purple-400',
 	Fiction: 'bg-pink-500',
+
+}
+
+export const typeColors: { [key: string]: string } = {
+	Game: 'bg-red-500',
+	Movie: 'bg-purple-500',
+	Book: 'bg-green-500',
 }
 
 export const getScoreColor = (score: number) => {

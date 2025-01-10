@@ -12,6 +12,7 @@ function AddReview({ productId, fetcher }: AddReviewProps) {
 		}
 	}
 
+	console.log('product: ', productId)
 	const reviewErrors = (fetcher.data as FetcherData)?.ReviewError
 
 	const isSubmitting = fetcher.state === 'submitting'
@@ -19,7 +20,7 @@ function AddReview({ productId, fetcher }: AddReviewProps) {
 	return (
 		<fetcher.Form
 			method="post"
-			action={`/addReview/${productId}`}
+			action={`/addReview/${String(productId)}`}
 			className="bg-primaryWhite-default dark:bg-primaryBlack-light p-8 rounded-xl shadow-lg mb-6 transition-all duration-300"
 		>
 			{reviewErrors?.message && (
@@ -97,11 +98,6 @@ function AddReview({ productId, fetcher }: AddReviewProps) {
 						: 'bg-primaryYellow-default hover:bg-primaryYellow-light text-white hover:scale-105'
 				}`}
 			>
-				{isSubmitting && (
-					<div className="absolute ml-10 left-3/4 transform -translate-x-1/2 top-1/2 -translate-y-1/2">
-						<div className="w-5 h-5 border-4 border-t-transparent border-white dark:border-gray-800 border-solid rounded-full animate-spin"></div>
-					</div>
-				)}
 				{isSubmitting ? 'Posting...' : 'Post Review'}
 			</button>
 		</fetcher.Form>

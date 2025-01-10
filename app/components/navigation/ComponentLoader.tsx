@@ -1,14 +1,10 @@
 import { useFetcher } from '@remix-run/react'
 
-interface ReviewLoaderProps {
+interface ComponentLoaderProps {
 	fetcher: ReturnType<typeof useFetcher>
 }
 
-interface ReviewLoaderProps {
-	fetcher: ReturnType<typeof useFetcher>
-}
-
-const ReviewLoader = ({ fetcher }: ReviewLoaderProps) => {
+const ComponentLoader = ({ fetcher }: ComponentLoaderProps) => {
 	const isLoading = fetcher.state === 'loading'
 
 	if (!isLoading) return null
@@ -20,4 +16,4 @@ const ReviewLoader = ({ fetcher }: ReviewLoaderProps) => {
 	)
 }
 
-export default ReviewLoader
+export default ComponentLoader

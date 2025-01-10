@@ -17,7 +17,7 @@ function LoginForm() {
 
 	const submitBtnCaption = 'Login'
 	const toggleBtnCaption = 'Create a new user'
-	const isSubmitting = fetcher.state === 'submitting'
+	const isSubmitting = fetcher.state === 'submitting' || fetcher.state === 'loading'
 
 	return (
 		<>
