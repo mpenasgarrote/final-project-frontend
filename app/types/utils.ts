@@ -7,11 +7,10 @@ export const genreColors: { [key: string]: string } = {
 	Thriller: 'bg-gray-800',
 	Fantasy: 'bg-purple-400',
 	Fiction: 'bg-pink-500',
-
 }
 
 export const typeColors: { [key: string]: string } = {
-	Game: 'bg-red-500',
+	Game: 'bg-orange-500',
 	Movie: 'bg-purple-500',
 	Book: 'bg-green-500',
 }

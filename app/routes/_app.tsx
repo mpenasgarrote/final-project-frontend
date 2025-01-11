@@ -19,7 +19,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 		return redirect('/login')
 	}
 
-	return user 
+	return user
 }
 
 export default function MainPageLayout(): JSX.Element {
@@ -33,7 +33,8 @@ export default function MainPageLayout(): JSX.Element {
 			/>
 			<Loader />
 			<MainHeader user={user} />
-			<main className="flex-grow">
+			<main className="flex-grow pt-40">
+				{' '}
 				<Outlet />
 			</main>
 			<MainFooter />

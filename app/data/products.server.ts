@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Genre, Product, Type } from '~/types/interfaces'
+import { Genre, Product, ShowErrors, Type } from '~/types/interfaces'
 
 const apiUrl = process.env.API_URL
 
@@ -290,7 +290,11 @@ export async function updateProductById(
 	}
 }
 
-async function checkImage(product_id: number, image: File | string, authToken:string) {
+async function checkImage(
+	product_id: number,
+	image: File | string,
+	authToken: string
+) {
 	const product = await getProductById(String(product_id), authToken)
 
 	if (product?.image === image) {
@@ -310,14 +314,17 @@ const updateProductGenres = async (
 	authToken: string
 ) => {
 	try {
-		await axios.delete(`${apiUrl}/api/product-genres?product_id=${product_id}`, {
-			headers: {
-				Authorization: `Bearer ${authToken}`,
-				'Content-Type': 'application/json',
-				Accept: 'application/json',
-			},
-			withCredentials: true,
-		})
+		await axios.delete(
+			`${apiUrl}/api/product-genres?product_id=${product_id}`,
+			{
+				headers: {
+					Authorization: `Bearer ${authToken}`,
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+				},
+				withCredentials: true,
+			}
+		)
 		console.log('Existing genres removed.')
 
 		const response = await axios.post(

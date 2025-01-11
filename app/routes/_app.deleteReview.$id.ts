@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, json } from '@remix-run/node'
+import { ActionFunctionArgs } from '@remix-run/node'
 import { getAuthToken } from '~/data/auth.server'
 import { deleteReviewById, getReviewsFromProduct } from '~/data/reviews.server'
 import { Review } from '~/types/interfaces'
@@ -21,9 +21,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 		return { reviews: updatedReviews }
 	} catch (error) {
-		return json(
-			{ error: error instanceof Error ? error.message : 'Unknown error' },
-			{ status: 500 }
-		)
+		return { error: 'An error ocurred when deleting a review' }
 	}
 }

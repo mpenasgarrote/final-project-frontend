@@ -1,66 +1,90 @@
-import { Link, Form } from '@remix-run/react'
-import { useState } from 'react'
+import { NavLink, Form } from '@remix-run/react'
+import { useState, useEffect } from 'react'
 import { User } from '~/types/interfaces'
 import PublishProductModal from '../products/PublishProductModal'
+import Searchbar from './Searchbar'
 
 const MainHeader = ({ user }: { user: User }) => {
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-
 	const [isProductModalOpen, setIsProductModalOpen] = useState(false)
+	const [scrolled, setScrolled] = useState(false)
 
 	const openModal = () => setIsProductModalOpen(true)
-
 	const closeModal = () => setIsProductModalOpen(false)
 
+	useEffect(() => {
+		const handleScroll = () => {
+			if (window.scrollY > 50) {
+				setScrolled(true)
+			} else {
+				setScrolled(false)
+			}
+		}
+
+		window.addEventListener('scroll', handleScroll)
+
+		return () => {
+			window.removeEventListener('scroll', handleScroll)
+		}
+	}, [])
+
 	return (
-		<nav className="bg-primaryBlack-default text-white px-6 py-4 shadow-md relative">
-			<div className="flex flex-wrap items-center justify-between max-w-7xl mx-auto">
-				<div className="flex-shrink-0 mx-auto md:mx-0">
-					<Link
-						to="/home"
-						className="text-2xl md:text-3xl font-extrabold tracking-wide text-center"
-					>
-						<img
-							src="/images/LogoCritics.png"
-							alt="The Critic's Eye"
-							className="h-12 md:h-16 hover:scale-110 transition-transform duration-300 ease-in-out"
-						/>
-					</Link>
-				</div>
+		<nav
+			className={`${
+				scrolled ? 'bg-primaryBlack-lighter' : 'bg-primaryBlack-default'
+			} text-white px-6 py-4 shadow-md fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out`}
+		>
+			<div
+				className={`flex flex-wrap items-center justify-between max-w-7xl mx-auto ${
+					scrolled ? 'py-2' : 'py-4'
+				} transition-all duration-300 ease-in-out`}
+			>
+				<NavLink
+					to="/home"
+					className={({ isActive }) =>
+						isActive
+							? 'text-2xl md:text-3xl font-extrabold tracking-wide text-center text-primaryYellow-default'
+							: 'text-2xl md:text-3xl font-extrabold tracking-wide text-center text-primaryWhite-default'
+					}
+					end
+				>
+					<img
+						src="/images/LogoCritics.png"
+						alt="The Critic's Eye"
+						className={`${
+							scrolled ? 'h-10 md:h-12' : 'h-12 md:h-16'
+						} hover:scale-110 transition-all duration-300 ease-in-out mx-auto`}
+					/>
+				</NavLink>
 
 				<div className="flex items-center space-x-8">
 					{['Movies', 'Games', 'Books'].map((item) => (
-						<Link
+						<NavLink
 							key={item}
 							to={`/${item.toLowerCase()}`}
-							className="relative text-primaryWhite-default dark:text-primaryWhite-default text-lg font-medium transition-all duration-300 ease-in-out group"
+							className={({ isActive }) =>
+								isActive
+									? 'relative text-primaryYellow-default dark:text-primaryYellow-default text-lg font-medium transition-all duration-300 ease-in-out group'
+									: 'relative text-primaryWhite-default dark:text-primaryWhite-default text-lg font-medium transition-all duration-300 ease-in-out group'
+							}
+							end
 						>
 							<span className="absolute inset-0 rounded-lg bg-primaryBlack-light transform scale-y-0 origin-bottom group-hover:scale-y-100 transition-transform duration-300 ease-in-out" />
-
 							<span className="relative z-10 px-2 group-hover:text-primaryYellow-default">
 								{item}
 							</span>
-						</Link>
+						</NavLink>
 					))}
 				</div>
 
 				<div className="flex items-center space-x-6 md:space-x-10 mt-4 md:mt-0">
-					<div className="relative w-full max-w-xs">
-						<input
-							type="text"
-							placeholder="Search..."
-							className="bg-primaryBlack-light text-sm w-full rounded-full pl-12 pr-5 py-2.5 focus:outline-none focus:font-bold transition-transform duration-300 ease-in-out focus:scale-105 focus:ring-2 focus:ring-primaryBlack-default focus:bg-primaryWhite-default focus:text-primaryBlack-default"
-						/>
-						<span className="absolute inset-y-0 left-4 flex items-center text-primaryWhite-default transition-colors duration-300">
-							<i className="bi bi-search"></i>
-						</span>
-					</div>
+					<Searchbar />
 
 					<button
 						onClick={openModal}
-						className=" transition-all duration-400 ease-in-out overflow-hidden transform transition-transform hover:scale-150 hover:text-primaryYellow-default"
+						className="transition-all duration-400 ease-in-out overflow-hidden transform transition-transform hover:scale-150 hover:text-primaryYellow-default"
 					>
-						<i className="bi bi-cloud-upload-fill mr-4 w-14 h-auto"></i>{' '}
+						<i className="bi bi-cloud-upload-fill mr-4 w-14 h-auto"></i>
 					</button>
 
 					<div className="relative">
@@ -89,7 +113,7 @@ const MainHeader = ({ user }: { user: User }) => {
 								>
 									<ul className="py-2">
 										<li className="px-4 py-2 w-full dark:bg-primaryBlack-default dark:text-primaryWhite-default dark:hover:text-primaryYellow-default dark:hover:bg-primaryBlack-light cursor-pointer block">
-											<Link to="/profile">Profile</Link>
+											<NavLink to="/profile">Profile</NavLink>
 										</li>
 										<li className="w-full">
 											<Form method="post" action="/logout" className="w-full">

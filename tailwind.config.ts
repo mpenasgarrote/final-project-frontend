@@ -19,6 +19,7 @@ export default {
 			colors: {
 				primaryBlack: {
 					default: '#202020',
+					lighter: '#212529',
 					light: '#333533',
 				},
 				primaryYellow: {
@@ -42,10 +43,9 @@ export default {
 			},
 			animation: {
 				shake: 'shake 0.4s ease-in-out',
-				fadeIn: 'fadeIn 1s ease-out forwards',
+				'fade-in': 'fadeIn 0.5s ease-out forwards', // La animación finaliza en "forwards" para mantener el estado final.
 				'slide-down': 'slide-down 0.3s ease-out',
 				fadeInScale: 'fadeInScale 0.3s ease-out forwards',
-
 			},
 			keyframes: {
 				shake: {
@@ -66,7 +66,8 @@ export default {
 				},
 				fadeInScale: {
 					'0%': { opacity: '0', transform: 'scale(0.95)' },
-					'100%': { opacity: '1', transform: 'scale(1)' } }
+					'100%': { opacity: '1', transform: 'scale(1)' },
+				},
 			},
 			backgroundImage: {
 				'login-image': "url('/images/loginBackground.jpg')",

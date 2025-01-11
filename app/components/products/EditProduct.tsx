@@ -3,12 +3,12 @@ import { useFetcher } from '@remix-run/react'
 import { Product } from '~/types/interfaces'
 
 interface EditProductProps {
-    product: Product
-    fetcher: ReturnType<typeof useFetcher>
-    onClick: React.MouseEventHandler<HTMLButtonElement>
+	product: Product
+	fetcher: ReturnType<typeof useFetcher>
+	onClick: React.MouseEventHandler<HTMLButtonElement>
 }
 
-export default function EditProduct({ product, fetcher, onClick }: EditProductProps) {
+export default function EditProduct({ fetcher, onClick }: EditProductProps) {
 	const isEditing = fetcher.state === 'submitting'
 
 	return (
@@ -28,7 +28,6 @@ export default function EditProduct({ product, fetcher, onClick }: EditProductPr
 					)}
 				</button>
 			</div>
-
 		</>
 	)
 }

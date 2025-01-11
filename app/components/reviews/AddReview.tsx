@@ -93,7 +93,7 @@ function AddReview({ productId, fetcher }: AddReviewProps) {
 				type="submit"
 				className={`w-full font-bold py-4 rounded-lg transition-all duration-300 transform relative ${
 					isSubmitting
-						? 'bg-gray-400 text-gray-200 cursor-not-allowed'
+						? 'bg-primaryBlack-default text-primaryWhite-default cursor-not-allowed'
 						: 'bg-primaryYellow-default hover:bg-primaryYellow-light text-white hover:scale-105'
 				}`}
 			>

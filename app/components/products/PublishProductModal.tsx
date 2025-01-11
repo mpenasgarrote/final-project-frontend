@@ -250,7 +250,7 @@ const PublishProductModal: React.FC<PublishProductProps> = ({ onClose }) => {
 								Product Image
 							</label>
 							<hr className="border border-primaryYellow-light mt-2 mb-4" />
-							<div className="mt-2 w-full h-[350px] p-4 bg-gray-700 text-white rounded-lg border-2 border-dashed border-gray-600 relative flex items-center justify-center">
+							<div className="mt-2 w-full h-[350px] p-4 bg-primaryBlack-light text-white rounded-lg border-2 border-dashed border-primaryBlack-default relative flex items-center justify-center">
 								<input
 									type="file"
 									id="image"

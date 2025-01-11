@@ -1,5 +1,5 @@
 import { Product, User } from '~/types/interfaces'
-import { genreColors, getScoreColor } from '~/types/utils'
+import { genreColors, getScoreColor, typeColors } from '~/types/utils'
 import DeleteProduct from './DeleteProduct'
 import { Link, useFetcher } from '@remix-run/react'
 import EditProduct from './EditProduct'
@@ -56,7 +56,11 @@ export function ProductCard({
 									{product.title}
 								</h2>
 								<div>
-									<p className="bg-gray-600 rounded-md px-2 py-1 text-xs italic text-white">
+									<p
+										className={`${
+											typeColors[product.type?.name ? product.type.name : '']
+										} rounded-md px-2 py-1 text-xs italic text-white`}
+									>
 										{product.type ? product.type.name : ''}
 									</p>
 								</div>
