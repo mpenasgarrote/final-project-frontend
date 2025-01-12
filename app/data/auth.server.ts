@@ -16,10 +16,10 @@ export const sessionStorage = createCookieSessionStorage({
 	},
 })
 
-export async function login({ email, password }: SignupInput) {
+export async function login({ email_or_username, password }: SignupInput) {
 	const response = await axios.post(
 		`${apiUrl}/api/login`,
-		{ email, password },
+		{ email_or_username, password },
 		{
 			headers: {
 				'Content-Type': 'application/json',

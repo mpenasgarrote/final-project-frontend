@@ -1,5 +1,5 @@
 import { Review } from '~/types/interfaces'
-import { getScoreColor } from '~/types/utils'
+import { getScoreColor } from '~/utils/utils'
 import DeleteReview from './DeleteReview'
 import { useFetcher } from '@remix-run/react'
 import { useState } from 'react'

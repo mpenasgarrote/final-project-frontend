@@ -1,5 +1,5 @@
 import { Product, User } from '~/types/interfaces'
-import { genreColors, getScoreColor, typeColors } from '~/types/utils'
+import { genreColors, getScoreColor, typeColors } from '~/utils/utils'
 import DeleteProduct from './DeleteProduct'
 import { Link, useFetcher } from '@remix-run/react'
 import EditProduct from './EditProduct'

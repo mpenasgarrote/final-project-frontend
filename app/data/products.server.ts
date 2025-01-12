@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Genre, Product, ShowErrors, Type } from '~/types/interfaces'
+import { Genre, Product, Type } from '~/types/interfaces'
 
 const apiUrl = process.env.API_URL
 

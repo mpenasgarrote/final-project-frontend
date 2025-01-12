@@ -13,25 +13,25 @@ export default function Index() {
 
 export async function action({ request }: ActionFunctionArgs) {
 	const formData = await request.formData()
-	const email = formData.get('email') as string
+	const username = formData.get('username') as string
 	const password = formData.get('password') as string
 
-	if (!email || !password) {
+	if (!username || !password) {
 		return {
 			validationErrors: {
-				email: 'Email is required',
+				username: 'Email is required',
 				password: 'Password is required',
 			},
 			status: 400,
 		}
 	}
 
-	if (validateLoginCredentials({ email, password })) {
-		return validateLoginCredentials({ email, password })
+	if (validateLoginCredentials({ username, password })) {
+		return validateLoginCredentials({ username, password })
 	}
 
 	try {
-		return await login({ email, password })
+		return await login({ email_or_username: username, password })
 	} catch (error: unknown) {
 		return error
 	}

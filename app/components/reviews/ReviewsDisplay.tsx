@@ -4,6 +4,7 @@ import ReviewCard from './ReviewCard'
 import AddReview from './AddReview'
 import { useFetcher } from '@remix-run/react'
 import ComponentLoader from '../navigation/ComponentLoader'
+import NoReviews from './NoReviews'
 
 interface ReviewsDisplayProps {
 	productId: number
@@ -55,14 +56,18 @@ export function ReviewsDisplay({
 
 			<hr className="border-primaryYellow-default mb-6" />
 
-			{updatedReviews.map((review) => (
-				<ReviewCard
-					key={review.id}
-					review={review}
-					userLogged={userLogged}
-					fetcher={fetcher}
-				/>
-			))}
+			{updatedReviews.length > 0 ? (
+				updatedReviews.map((review: Review) => (
+					<ReviewCard
+						key={review.id}
+						review={review}
+						userLogged={userLogged}
+						fetcher={fetcher}
+					/>
+				))
+			) : (
+				<NoReviews />
+			)}
 		</div>
 	)
 }

@@ -2,7 +2,7 @@ import { LoaderFunctionArgs } from '@remix-run/node'
 import { getProductById } from '~/data/products.server'
 import { getAuthToken, getLoggedUser } from '~/data/auth.server'
 import { Product, Review } from '~/types/interfaces'
-import { genreColors, getScoreColor } from '~/types/utils'
+import { genreColors, getScoreColor } from '~/utils/utils'
 import { useLoaderData } from '@remix-run/react'
 import { getReviewsFromProduct } from '~/data/reviews.server'
 import { ReviewsDisplay } from '~/components/reviews/ReviewsDisplay'
@@ -119,7 +119,11 @@ export default function ProductDetails() {
 				</div>
 			</div>
 
-			<ReviewsDisplay productId={product.id} reviews={reviews} userLogged={userLogged} />
+			<ReviewsDisplay
+				productId={product.id}
+				reviews={reviews}
+				userLogged={userLogged}
+			/>
 		</>
 	)
 }

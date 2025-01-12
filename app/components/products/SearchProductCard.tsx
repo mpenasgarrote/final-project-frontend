@@ -1,6 +1,6 @@
 import { Link } from '@remix-run/react'
 import { Product } from '~/types/interfaces'
-import { getScoreColor, typeColors } from '~/types/utils'
+import { getScoreColor, typeColors } from '~/utils/utils'
 
 export default function SearchProductCard({ product }: { product: Product }) {
 	return (

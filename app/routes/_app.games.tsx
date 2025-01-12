@@ -15,25 +15,25 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 	const user = await getLoggedUser(request, authToken)
 
-	const movies = await getProductsFromType(2, authToken)
+	const games = await getProductsFromType(3, authToken)
 
 	const genres = await getGenres(authToken)
 
-	return { movies, user, genres }
+	return { games, user, genres }
 }
 
-export default function Movies() {
+export default function Games() {
 	const fetcher = useFetcher<{ products: Product[] }>()
 
-	const { movies, user, genres } = useLoaderData<{
-		movies: Product[]
+	const { games, user, genres } = useLoaderData<{
+		games: Product[]
 		user: User
 		genres: Genre[]
 	}>()
 
 	let products = fetcher.data?.products
 
-	if (!products) products = movies
+	if (!products) products = games
 
 	return (
 		<div className="container mx-auto p-2">
@@ -42,8 +42,8 @@ export default function Movies() {
 				user={user}
 				genres={genres}
 				products={products}
-				type={2}
-				title={'Movies'}
+				type={3}
+				title={'Games'}
 			/>
 		</div>
 	)

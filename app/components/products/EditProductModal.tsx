@@ -2,7 +2,7 @@ import { useFetcher } from '@remix-run/react'
 import { useEffect, useState } from 'react'
 import { Product, Type } from '~/types/interfaces'
 import ComponentLoader from '../navigation/ComponentLoader'
-import { genreColors, typeColors } from '~/types/utils'
+import { genreColors, typeColors } from '~/utils/utils'
 
 interface Genre {
 	id: number

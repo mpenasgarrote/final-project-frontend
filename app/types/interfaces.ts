@@ -5,7 +5,7 @@ export type ValidationErrors = {
 }
 
 export interface SignupInput {
-	email: string
+	email_or_username: string
 	password: string
 }
 

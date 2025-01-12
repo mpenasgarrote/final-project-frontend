@@ -2,7 +2,7 @@ import { useFetcher } from '@remix-run/react'
 import { useEffect, useState } from 'react'
 import { Type } from '~/types/interfaces'
 import ComponentLoader from '../navigation/ComponentLoader'
-import { genreColors, typeColors } from '~/types/utils'
+import { genreColors, typeColors } from '~/utils/utils'
 
 interface Genre {
 	id: number
@@ -13,7 +13,9 @@ interface PublishProductProps {
 	onClose: () => void
 }
 
-const PublishProductModal: React.FC<PublishProductProps> = ({ onClose }) => {
+const PublishProductModal: React.FC<PublishProductProps> = ({
+	onClose,
+}: PublishProductProps) => {
 	const fetcher = useFetcher()
 	const genreFetcher = useFetcher<Genre[]>()
 	const typeFetcher = useFetcher<Type[]>()
@@ -222,7 +224,9 @@ const PublishProductModal: React.FC<PublishProductProps> = ({ onClose }) => {
 											onClick={() => toggleGenreSelection(genre.id)}
 											className={`justify-self-center mt-2 rounded-md px-4 py-2 text-xs font-bold hover:scale-110 text-white transition-all duration-200 ${
 												selectedGenres.includes(genre.id)
-													? `${ genreColors[genre.name] } border-2 border-primaryYellow-light scale-105 text-black`
+													? `${
+															genreColors[genre.name]
+													  } border-2 border-primaryYellow-light scale-105 text-black`
 													: 'bg-primaryBlack-light border-2 border-primaryBlack-default text-white'
 											}`}
 										>

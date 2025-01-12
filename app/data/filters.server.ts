@@ -8,12 +8,20 @@ export async function querySearch(
 	queryParam: string,
 	authToken: string
 ): Promise<Product[] | ShowErrors> {
-	console.log('queryParam', queryParam)
-
 	const query = `title_contains=${encodeURIComponent(queryParam)}`
 
 	return await getFromAPI(query, authToken)
 }
+
+export async function getProductsFromType(type_id:number,
+	authToken: string
+) {
+	
+	const query = 'type_id=' + type_id
+
+	return await getFromAPI(query, authToken)
+}
+
 
 export async function getTrending(
 	type_id: number,
@@ -24,7 +32,7 @@ export async function getTrending(
 	return await getFromAPI(query, authToken)
 }
 
-async function getFromAPI(
+export async function getFromAPI(
 	query: string,
 	authToken: string
 ): Promise<Product[] | ShowErrors> {

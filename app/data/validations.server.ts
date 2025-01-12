@@ -25,8 +25,8 @@ function isValidImage(value: string): boolean {
 
 interface CredentialsInput {
 	name?: string
-	username?: string
-	email: string
+	username: string
+	email?: string
 	password: string
 	confirmPassword?: string
 	image?: string
@@ -37,10 +37,10 @@ export function validateLoginCredentials(
 ): ErrorsInterface | undefined {
 	const validationErrors: ValidationErrors = {}
 
-	if (!input.email || !isValidEmail(input.email)) {
+	if (!input.username) {
 		validationErrors.email = input.email
 			? 'Invalid email address.'
-			: 'Email is required.'
+			: 'Username is required.'
 	}
 
 	if (!input.password || !isValidPassword(input.password)) {

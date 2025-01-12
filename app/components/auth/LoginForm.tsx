@@ -1,6 +1,20 @@
 import { Link, useFetcher } from '@remix-run/react'
+import { useEffect } from 'react'
 
 function LoginForm() {
+	// Per defecte, dark mode:
+	useEffect(() => {
+		if (
+			localStorage.getItem('theme') === 'dark' ||
+			(!localStorage.getItem('theme') &&
+				window.matchMedia('(prefers-color-scheme: dark)').matches)
+		) {
+			document.documentElement.classList.add('dark')
+		} else {
+			document.documentElement.classList.remove('dark')
+		}
+	}, [])
+
 	const fetcher = useFetcher()
 
 	interface ValidationErrors {
@@ -17,7 +31,8 @@ function LoginForm() {
 
 	const submitBtnCaption = 'Login'
 	const toggleBtnCaption = 'Create a new user'
-	const isSubmitting = fetcher.state === 'submitting' || fetcher.state === 'loading'
+	const isSubmitting =
+		fetcher.state === 'submitting' || fetcher.state === 'loading'
 
 	return (
 		<>
@@ -37,13 +52,13 @@ function LoginForm() {
 										: 'text-gray-700 dark:text-gray-300'
 								}`}
 							>
-								Email
+								Username
 							</label>
 							<input
 								type="string"
 								id="email"
-								name="email"
-								placeholder="Enter your email"
+								name="username"
+								placeholder="Enter your username or email"
 								className={`w-full p-3 rounded-lg border italic focus:outline-none transition-all duration-200 transform ${
 									errors.email
 										? 'border-red-500 focus:ring-errorColor-light text-errorColor-light focus:scale-105 focus:border-errorColor-light animate-shake'

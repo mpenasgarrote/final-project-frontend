@@ -8,6 +8,7 @@ const MainHeader = ({ user }: { user: User }) => {
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 	const [isProductModalOpen, setIsProductModalOpen] = useState(false)
 	const [scrolled, setScrolled] = useState(false)
+	const [isDarkMode, setIsDarkMode] = useState(true)
 
 	const openModal = () => setIsProductModalOpen(true)
 	const closeModal = () => setIsProductModalOpen(false)
@@ -27,6 +28,35 @@ const MainHeader = ({ user }: { user: User }) => {
 			window.removeEventListener('scroll', handleScroll)
 		}
 	}, [])
+
+	/*
+		Dark Mode: 
+		Utilitzem el useEffect per identficar quin es el mode actual de la pàgina.
+	*/
+	useEffect(() => {
+		if (
+			localStorage.getItem('theme') === 'dark' ||
+			(!localStorage.getItem('theme') &&
+				window.matchMedia('(prefers-color-scheme: dark)').matches)
+		) {
+			document.documentElement.classList.add('dark')
+		} else {
+			document.documentElement.classList.remove('dark')
+		}
+	}, [])
+
+	// Al apretar el botó, fem set al valor contrari per a canviar de mode. Utilitzem localStorage per guardar el mode i classList per aplicar-lo.
+	const toggleTheme = () => {
+		if (isDarkMode) {
+			setIsDarkMode(false)
+			localStorage.setItem('theme', 'light')
+			document.documentElement.classList.remove('dark')
+		} else {
+			setIsDarkMode(true)
+			localStorage.setItem('theme', 'dark')
+			document.documentElement.classList.add('dark')
+		}
+	}
 
 	return (
 		<nav
@@ -114,6 +144,22 @@ const MainHeader = ({ user }: { user: User }) => {
 									<ul className="py-2">
 										<li className="px-4 py-2 w-full dark:bg-primaryBlack-default dark:text-primaryWhite-default dark:hover:text-primaryYellow-default dark:hover:bg-primaryBlack-light cursor-pointer block">
 											<NavLink to="/profile">Profile</NavLink>
+										</li>
+										<li className="px-4 py-2 w-full dark:bg-primaryBlack-default dark:text-primaryWhite-default dark:hover:text-primaryYellow-default dark:hover:bg-primaryBlack-light cursor-pointer block">
+											<div className="flex items-center space-x-2">
+												<label className="relative inline-flex items-center cursor-pointer">
+													<input
+														type="checkbox"
+														checked={isDarkMode}
+														onChange={toggleTheme}
+														className="sr-only peer"
+													/>
+													<div className="w-11 h-6 bg-primaryWhite-default rounded-full peer transition-all peer-focus:ring-2 peer-focus:ring-indigo-300 dark:peer-focus:ring-primaryYellow-light peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primaryBlack-light"></div>
+													<span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+														{isDarkMode ? 'Dark' : 'Light'}
+													</span>
+												</label>
+											</div>
 										</li>
 										<li className="w-full">
 											<Form method="post" action="/logout" className="w-full">
