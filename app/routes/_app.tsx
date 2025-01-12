@@ -3,6 +3,7 @@ import { Outlet, useLoaderData } from '@remix-run/react'
 import Loader from '~/components/navigation/Loader'
 import MainFooter from '~/components/navigation/MainFooter'
 import MainHeader from '~/components/navigation/MainHeader'
+import NotFound from '~/components/navigation/NotFound'
 import { getAuthToken, getLoggedUser } from '~/data/auth.server'
 import { User } from '~/types/interfaces'
 
@@ -41,3 +42,28 @@ export default function MainPageLayout(): JSX.Element {
 		</div>
 	)
 }
+
+// export function CatchBoundary() {
+// 	const caught = useCatch()
+
+// 	if (caught.status === 404) {
+// 		return <NotFound />
+// 	}
+
+// 	return (
+// 		<div>
+// 			<h1>Error</h1>
+// 		</div>
+// 	)
+// }
+
+// export function ErrorBoundary({ error }: { error: Error }) {
+// 	return (
+// 		<div>
+// 			<h1>Something went wrong</h1>
+// 		</div>
+// 	)
+// }
+// function useCatch() {
+// 	return { status: 404 }
+// }

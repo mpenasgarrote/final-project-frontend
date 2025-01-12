@@ -3,10 +3,12 @@ import { useState, useEffect } from 'react'
 import { User } from '~/types/interfaces'
 import PublishProductModal from '../products/PublishProductModal'
 import Searchbar from './Searchbar'
+import { ProfileModal } from '../profile/ProfileTab'
 
 const MainHeader = ({ user }: { user: User }) => {
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 	const [isProductModalOpen, setIsProductModalOpen] = useState(false)
+	const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
 	const [scrolled, setScrolled] = useState(false)
 	const [isDarkMode, setIsDarkMode] = useState(true)
 
@@ -143,9 +145,6 @@ const MainHeader = ({ user }: { user: User }) => {
 								>
 									<ul className="py-2">
 										<li className="px-4 py-2 w-full dark:bg-primaryBlack-default dark:text-primaryWhite-default dark:hover:text-primaryYellow-default dark:hover:bg-primaryBlack-light cursor-pointer block">
-											<NavLink to="/profile">Profile</NavLink>
-										</li>
-										<li className="px-4 py-2 w-full dark:bg-primaryBlack-default dark:text-primaryWhite-default dark:hover:text-primaryYellow-default dark:hover:bg-primaryBlack-light cursor-pointer block">
 											<div className="flex items-center space-x-2">
 												<label className="relative inline-flex items-center cursor-pointer">
 													<input
@@ -155,12 +154,25 @@ const MainHeader = ({ user }: { user: User }) => {
 														className="sr-only peer"
 													/>
 													<div className="w-11 h-6 bg-primaryWhite-default rounded-full peer transition-all peer-focus:ring-2 peer-focus:ring-indigo-300 dark:peer-focus:ring-primaryYellow-light peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primaryBlack-light"></div>
-													<span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+													<span className="ml-4 text-sm font-medium text-gray-900 dark:text-gray-300">
 														{isDarkMode ? 'Dark' : 'Light'}
 													</span>
 												</label>
 											</div>
 										</li>
+
+										<li className="px-4 py-2 w-full dark:bg-primaryBlack-default dark:text-primaryWhite-default dark:hover:text-primaryYellow-default dark:hover:bg-primaryBlack-light cursor-pointer block flex items-center">
+											<i className="bi bi-person text-lg"></i>
+											<button
+												onClick={() => setIsProfileModalOpen(true)}
+												className=""
+											>
+												<span className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+													Profile
+												</span>
+											</button>
+										</li>
+
 										<li className="w-full">
 											<Form method="post" action="/logout" className="w-full">
 												<button
@@ -168,6 +180,9 @@ const MainHeader = ({ user }: { user: User }) => {
 													className="w-full text-left px-4 py-2 dark:bg-primaryBlack-default dark:text-primaryWhite-default dark:hover:text-primaryYellow-default dark:hover:bg-primaryBlack-light cursor-pointer block"
 												>
 													<i className="bi bi-box-arrow-right"></i>
+													<span className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+														Logout
+													</span>
 												</button>
 											</Form>
 										</li>
@@ -182,6 +197,12 @@ const MainHeader = ({ user }: { user: User }) => {
 			</div>
 
 			{isProductModalOpen && <PublishProductModal onClose={closeModal} />}
+			{isProfileModalOpen && (
+				<ProfileModal
+					onClose={() => setIsProfileModalOpen(false)}
+					user={user}
+				/>
+			)}
 		</nav>
 	)
 }
