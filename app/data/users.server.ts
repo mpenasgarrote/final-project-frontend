@@ -48,3 +48,86 @@ export async function deleteUserById(user_id: number, authToken: string) {
 		return 400
 	}
 }
+
+export async function updateUser(
+	{
+		id,
+		name,
+		email,
+		username,
+		image,
+	}: {
+		id: number
+		name: string
+		email: string
+		username: string
+		image: File | null
+	},
+	authToken: string
+) {
+	const response = await axios.patch(
+		`${apiUrl}/api/users/${id}`,
+		{ name, email, username },
+		{
+			headers: {
+				Authorization: `Bearer ${authToken}`,
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+			},
+			withCredentials: true,
+		}
+	)
+
+	if (response.status !== 200) {
+		throw new Error(`Failed to update user ${id}. Status: ${response.status}`)
+	}
+
+	if (image) {
+		checkImage(id, image, authToken)
+	}
+
+	return true
+}
+
+async function checkImage(
+	user_id: number,
+	image: File | string,
+	authToken: string
+) {
+	const product = await getUserById(user_id, authToken)
+
+	if (product?.image === image) {
+		return null
+	}
+
+	if (image instanceof File) {
+		uploadUserImage(user_id, image, authToken)
+	} else {
+		console.error('Invalid image type. Expected a File.')
+	}
+}
+
+async function uploadUserImage(userId: number, image: File, authToken: string) {
+	try {
+		const formData = new FormData()
+		formData.append('user_id', userId.toString())
+		formData.append('image', image)
+
+		const uploadImage = await axios.post(
+			`${apiUrl}/api/uploadProfileImage`,
+			formData,
+			{
+				headers: {
+					'Content-Type': 'multipart/form-data',
+					Authorization: `Bearer ${authToken}`,
+				},
+				withCredentials: true,
+			}
+		)
+
+		console.log('Image Uploaded Successfully: ' + uploadImage.data.url)
+		return uploadImage.data.url
+	} catch (error) {
+		console.error('Error when uploading image:', error)
+	}
+}

@@ -3,7 +3,6 @@ import { Outlet, useLoaderData } from '@remix-run/react'
 import Loader from '~/components/navigation/Loader'
 import MainFooter from '~/components/navigation/MainFooter'
 import MainHeader from '~/components/navigation/MainHeader'
-import NotFound from '~/components/navigation/NotFound'
 import { getAuthToken, getLoggedUser } from '~/data/auth.server'
 import { User } from '~/types/interfaces'
 

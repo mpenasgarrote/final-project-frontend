@@ -3,7 +3,6 @@ import { getAuthToken } from '~/data/auth.server'
 import { updateProductById } from '~/data/products.server'
 
 export async function action({ request, params }: ActionFunctionArgs) {
-	console.log('hello')
 	const authToken = (await getAuthToken(request)) as string
 	const formData = await request.formData()
 
