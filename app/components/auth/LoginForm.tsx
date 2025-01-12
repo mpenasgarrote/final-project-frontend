@@ -113,7 +113,7 @@ function LoginForm() {
 							className={`w-full font-bold py-3 rounded-lg transition-all duration-300 transform relative ${
 								isSubmitting
 									? 'bg-gray-400 text-gray-200 cursor-not-allowed'
-									: 'bg-primaryYellow-default hover:bg-primaryYellow-light text-white hover:scale-110'
+									: 'bg-primaryYellow-default hover:bg-primaryYellow-light text-black hover:scale-110'
 							}`}
 						>
 							{isSubmitting && (

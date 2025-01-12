@@ -24,7 +24,8 @@ function SignupForm() {
 
 	const submitBtnCaption = 'Register'
 
-	const isSubmitting = fetcher.state === 'submitting' || fetcher.state === 'loading'
+	const isSubmitting =
+		fetcher.state === 'submitting' || fetcher.state === 'loading'
 
 	const [imagePreview, setImagePreview] = useState(
 		'https://res.cloudinary.com/dy4kmqtwc/image/upload/v1736026088/Critics%20Eye/gtdrnbhbsebjqt3vqnha.jpg'
@@ -237,7 +238,7 @@ function SignupForm() {
 							className={`w-full font-bold py-3 rounded-lg transition-all duration-300 transform relative ${
 								isSubmitting
 									? 'bg-gray-400 text-gray-200 cursor-not-allowed'
-									: 'bg-primaryYellow-default hover:bg-primaryYellow-light text-white hover:scale-110'
+									: 'bg-primaryYellow-default hover:bg-primaryYellow-light text-black hover:scale-110'
 							}`}
 						>
 							{isSubmitting && (

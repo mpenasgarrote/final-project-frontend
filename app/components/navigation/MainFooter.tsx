@@ -32,7 +32,6 @@ const MainFooter: React.FC = () => {
 					</Link>
 				</div>
 
-				{/* Right Section: Social Icons */}
 				<div className="flex items-center space-x-4 mt-4 md:mt-0">
 					<a
 						href="https://facebook.com"

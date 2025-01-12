@@ -37,9 +37,9 @@ export function validateLoginCredentials(
 ): ErrorsInterface | undefined {
 	const validationErrors: ValidationErrors = {}
 
-	if (!input.username) {
-		validationErrors.email = input.email
-			? 'Invalid email address.'
+	if (!input.username || !isValidUsername(input.username)) {
+		validationErrors.username = input.username
+			? 'Invalid username.'
 			: 'Username is required.'
 	}
 

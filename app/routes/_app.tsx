@@ -26,11 +26,10 @@ export default function MainPageLayout(): JSX.Element {
 	const user = useLoaderData<User>()
 
 	return (
-		<div className="flex flex-col min-h-screen">
+		<><title>The Critic&apos;s Eye</title><div className="flex flex-col min-h-screen">
 			<link
 				href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
-				rel="stylesheet"
-			/>
+				rel="stylesheet" />
 			<Loader />
 			<MainHeader user={user} />
 			<main className="flex-grow pt-40">
@@ -38,7 +37,7 @@ export default function MainPageLayout(): JSX.Element {
 				<Outlet />
 			</main>
 			<MainFooter />
-		</div>
+		</div></>
 	)
 }
 
