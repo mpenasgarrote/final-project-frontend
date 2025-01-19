@@ -131,3 +131,37 @@ async function uploadUserImage(userId: number, image: File, authToken: string) {
 		console.error('Error when uploading image:', error)
 	}
 }
+
+export async function updatePassword(
+	id: number,
+	newPassword: string,
+	authToken: string
+) {
+	try {
+		const response = await axios.patch(
+			`${apiUrl}/api/users/${id}`,
+			{ password: newPassword },
+			{
+				headers: {
+					Authorization: `Bearer ${authToken}`,
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+				},
+				withCredentials: true,
+			}
+		)
+
+		if (response.status === 200) {
+			return {
+				message: 'Password updated succesfully',
+				status: 200,
+			}
+		}
+	} catch (error) {
+		return {
+			message: 'En error occurred when updating password: ',
+			error,
+			status: 400,
+		}
+	}
+}

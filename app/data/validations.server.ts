@@ -10,11 +10,11 @@ function isValidUsername(value: string): boolean {
 	return value.trim().length >= 4
 }
 
-function isValidEmail(value: string): boolean {
+export function isValidEmail(value: string): boolean {
 	return value.trim().includes('@')
 }
 
-function isValidPassword(value: string): boolean {
+export function isValidPassword(value: string): boolean {
 	return value.trim().length >= 8
 }
 
@@ -97,4 +97,45 @@ export function validateSignupCredentials(
 	if (Object.keys(validationErrors).length > 0) {
 		return validationErrors
 	}
+}
+
+export function isValidProduct(
+	title: string,
+	description: string,
+	author: string,
+	typeId: number,
+	genres: number[]
+) {
+	interface ErrorInterface {
+		title?: string
+		description?: string
+		author?: string
+		typeId?: string
+		genres?: string
+	}
+
+	const errors: ErrorInterface = {}
+
+	if (!title || title.trim().length < 3) {
+		errors.title = 'Title is required and must be at least 3 characters long.'
+	}
+
+	if (!description || description.trim().length < 10) {
+		errors.description =
+			'Description is required and must be at least 10 characters long.'
+	}
+
+	if (!author || author.trim().length < 2) {
+		errors.author = 'Author is required and must be at least 2 characters long.'
+	}
+
+	if (!typeId || isNaN(typeId)) {
+		errors.typeId = 'Type ID is required and must be a valid number.'
+	}
+
+	if (!Array.isArray(genres) || genres.some((genre) => isNaN(genre))) {
+		errors.genres = 'Genres must be a list of valid numbers.'
+	}
+
+	return errors
 }

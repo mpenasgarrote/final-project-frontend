@@ -27,7 +27,7 @@ export function ProductCard({
 				<EditProductModal onClose={closeModal} product={product} />
 			)}
 
-			<div className="relative w-64 mx-auto flex flex-col rounded-lg h-full overflow-hidden transform transition-transform transition-opacity opacity-100 hover:scale-105">
+			<div className="relative w-64 mx-auto flex flex-col rounded-lg h-full overflow-hidden transform transition-transform transition-opacity opacity-100 hover:scale-105 animate-slide-down">
 				{isUserOwner && (
 					<div className="absolute top-2 right-2 z-10 flex bg-primaryBlack-light px-2 rounded-lg gap-4">
 						<EditProduct

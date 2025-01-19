@@ -125,8 +125,15 @@ function LoginForm() {
 						</button>
 
 						<Link
+							to="/restore-password"
+							className="block text-center text-sm text-gray-700 dark:text-gray-300 hover:underline dark:hover:text-primaryYellow-default"
+						>
+							Forgot your password?
+						</Link>
+
+						<Link
 							to="/register"
-							className="block text-center text-sm text-gray-700 dark:text-gray-300 hover:underline"
+							className="block text-center text-sm text-gray-700 dark:text-gray-300 hover:underline dark:hover:text-primaryYellow-default"
 						>
 							{toggleBtnCaption}
 						</Link>

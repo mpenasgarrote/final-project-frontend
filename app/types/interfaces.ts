@@ -53,7 +53,15 @@ export interface User {
 	created_at: string
 	updated_at: string
 }
-
+export interface Comment {
+	id: number
+	review_id: number
+	user_id: number
+	user?: User
+	content: string
+	created_at: string
+	updated_at: string
+}
 export interface Review {
 	id: number
 	user_id: number
@@ -63,6 +71,7 @@ export interface Review {
 	score: number
 	product_id: number
 	product?: Product
+	comments?: Comment[]
 	created_at?: Date
 	updated_at?: Date
 }

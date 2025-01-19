@@ -52,7 +52,6 @@ export default function Searchbar() {
 
 			{isDropdownOpen && (
 				<div className="absolute left-0 right-0 bg-primaryWhite-default dark:bg-primaryBlack-default shadow-lg rounded-lg mt-2 z-50 max-h-60 overflow-y-auto">
-					{fetcher.state === 'loading' && <ComponentLoader fetcher={fetcher} />}
 
 					{results.map((result: Product) => (
 						<SearchProductCard key={result.id} product={result} />

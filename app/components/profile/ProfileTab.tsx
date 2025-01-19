@@ -62,7 +62,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
 	}
 
 	return (
-		<div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+		<div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 animate__animated animate__fadeIn transform transition-all duration-300 animate-fadeInScale">
 			<ComponentLoader fetcher={fetcher} />
 			<fetcher.Form
 				method="post"

@@ -3,7 +3,6 @@ import { getAuthToken } from '~/data/auth.server'
 import { deleteProductById } from '~/data/products.server'
 
 export async function action({ request }: ActionFunctionArgs) {
-	console.log('Si')
 	const authToken = (await getAuthToken(request)) as string
 	const formData = await request.formData()
 
@@ -14,6 +13,6 @@ export async function action({ request }: ActionFunctionArgs) {
 
 		return redirect('/home')
 	} catch (error) {
-		return { message: 'Product could not be uploaded.' }
+		return { message: 'Product could not be deleted.' }
 	}
 }

@@ -75,7 +75,7 @@ export function ProductCarrousel({
 
 			<hr className="border-t-2 border-primaryYellow-default" />
 
-			<div className="mt-8 overflow-x-auto no-scrollbar flex gap-6 pb-4">
+			<div className="mt-8 overflow-x-auto no-scrollbar flex gap-6 pb-4 ">
 				<div className="flex mt-4 ml-2 gap-6">
 					{currentProducts.map((product) => (
 						<ProductCard

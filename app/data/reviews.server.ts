@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Review } from '~/types/interfaces'
+import { Review, Comment } from '~/types/interfaces'
 import { getUserById } from './users.server'
 
 const apiUrl = process.env.API_URL
@@ -60,6 +60,40 @@ export async function postReview(
 	}
 }
 
+export async function postComment(
+	review_id: number,
+	user_id: number,
+	content: string,
+	authToken: string
+) {
+	const response = await axios.post(
+		`${apiUrl}/api/comments`,
+		{ review_id, user_id, content },
+		{
+			headers: {
+				Authorization: `Bearer ${authToken}`,
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+			},
+			withCredentials: true,
+		}
+	)
+
+	if (response.status === 200) {
+		console.log('Comment Added.', response.data)
+
+		return response.data
+	} else {
+		console.error('An error has occured when adding a Comment.')
+
+		return {
+			Error: {
+				message: 'An error has occurred when adding a Comment.',
+			},
+		}
+	}
+}
+
 export async function deleteReviewById(review_id: number, authToken: string) {
 	const response = await axios.delete(`${apiUrl}/api/reviews/${review_id}`, {
 		headers: {
@@ -77,9 +111,12 @@ export async function deleteReviewById(review_id: number, authToken: string) {
 	}
 }
 
-export async function updateReviewById(review: { id: number, title: string, content: string, score: number }, authToken: string) {
+export async function updateReviewById(
+	review: { id: number; title: string; content: string; score: number },
+	authToken: string
+) {
 	try {
-		const { id: review_id, ...reviewData } = review 
+		const { id: review_id, ...reviewData } = review
 		const response = await axios.patch(
 			`${apiUrl}/api/reviews/${review_id}`,
 			reviewData,
@@ -138,13 +175,68 @@ export async function getReviewsFromProduct(
 		await Promise.all(
 			reviews.map(async (review) => {
 				review.user = await getUserById(review.user_id, authToken)
+
+				const comments: Comment[] | { message: string } =
+					await getCommentsFromReview(review.id, authToken)
+
+				review.comments = Array.isArray(comments) ? comments : undefined
 			})
 		)
 
 		return reviews
 	} catch (error) {
-		console.log(error)
+		console.error(error)
 
 		throw error
+	}
+}
+
+export async function getCommentsFromReview(
+	id: number,
+	authToken: string
+): Promise<Comment[] | { message: string }> {
+	try {
+		const response = await axios.get(`${apiUrl}/api/comments?review_id=${id}`, {
+			headers: {
+				Authorization: `Bearer ${authToken}`,
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+			},
+			withCredentials: true,
+		})
+
+		if (response.status === 200) {
+			const comments: Comment[] = response.data.comments as Comment[]
+
+			return comments
+		}
+
+		return {
+			message: 'An error has ocurred when fetching comments: ',
+		}
+	} catch (error) {
+		return {
+			message: 'An error has ocurred when fetching comments: ',
+		}
+	}
+}
+
+export async function deleteCommentById(id: number, authToken: string) {
+	console.log('hola')
+	const response = await axios.delete(`${apiUrl}/api/comments/${id}`, {
+		headers: {
+			Authorization: `Bearer ${authToken}`,
+			'Content-Type': 'application/json',
+			Accept: 'application/json',
+		},
+		withCredentials: true,
+	})
+
+	console.log('Response: ', response.data)
+
+	if (response.status === 200) {
+		console.log('Comment Deleted Succesfully.', response.data)
+	} else {
+		console.error('An error has occured when deleting a comment.')
 	}
 }

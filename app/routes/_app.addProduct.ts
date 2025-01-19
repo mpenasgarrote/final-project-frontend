@@ -2,6 +2,7 @@ import { ActionFunctionArgs } from '@remix-run/node'
 import { redirect } from 'react-router'
 import { getAuthToken, getLoggedUserId } from '~/data/auth.server'
 import { postProduct } from '~/data/products.server'
+import { isValidProduct } from '~/data/validations.server'
 
 export async function action({ request }: ActionFunctionArgs) {
 	const authToken = await getAuthToken(request)
@@ -11,10 +12,22 @@ export async function action({ request }: ActionFunctionArgs) {
 	const title = formData.get('title') as string
 	const description = formData.get('description') as string
 	const author = formData.get('author') as string
-	const typeId = formData.get('typeId')
+	const typeId = formData.get('typeId') as string
 	const genresString = formData.get('genres') as string
 	const genres = genresString ? genresString.split(',').map(Number) : []
 	const image = formData.get('image') as File | null
+
+	const errors = isValidProduct(
+		title,
+		description,
+		author,
+		Number(typeId),
+		genres
+	)
+
+	if (Object.keys(errors).length > 0) {
+		return errors
+	}
 
 	if (authToken) {
 		try {

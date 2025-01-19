@@ -27,6 +27,18 @@ const PublishProductModal: React.FC<PublishProductProps> = ({
 	const [selectedGenres, setSelectedGenres] = useState<number[]>([])
 	const [selectedType, setSelectedType] = useState<number | null>(null)
 
+	type FetcherData = {
+		errors?: {
+			title?: string
+			description?: string
+			author?: string
+			typeId?: string
+			genres?: string
+		}
+	}
+
+	const formError = (fetcher.data as FetcherData)?.errors
+
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files) {
 			const file = e.target.files[0]
@@ -275,6 +287,20 @@ const PublishProductModal: React.FC<PublishProductProps> = ({
 									</div>
 								)}
 							</div>
+						</div>
+
+						<div>
+							{formError && (
+								<ul>
+									{Object.entries(formError).map(([key, value]) => {
+										return (
+											<li key={key} className="text-red-500 text-xs">
+												{value}
+											</li>
+										)
+									})}
+								</ul>
+							)}
 						</div>
 
 						<button

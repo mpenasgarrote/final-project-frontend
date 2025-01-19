@@ -93,12 +93,12 @@ export async function signup(
 
 			return createUserSession(userId, authToken, '/home')
 		} else {
-			const validationErr: ShowErrors = {
-				title: 'Invalid signup credentials',
-				code: '401',
+			return {
+				error: {
+					message: response.data,
+					code: response.status,
+				},
 			}
-
-			throw validationErr
 		}
 	} catch (error) {
 		return error
@@ -186,4 +186,31 @@ export async function getLoggedUser(request: Request, authToken: string) {
 	})
 
 	return response.data as User
+}
+
+export async function sendPasswordResetRequest(email: string) {
+	try {
+		const response = await axios.post(
+			`${apiUrl}/api/sendPasswordReset`,
+			{ email },
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+				},
+				withCredentials: true,
+			}
+		)
+
+		if (response.status === 200) {
+			return {
+				message: response.data.message,
+				status: response.status,
+			}
+		}
+	} catch (error) {
+		return {
+			message: 'Something went wrong' + error,
+		}
+	}
 }
